@@ -1,0 +1,77 @@
+{
+  "expo": {
+    "name": "Afterglow",
+    "slug": "afterglow",
+    "scheme": "afterglow",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#14110e"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sofaloaf.afterglow",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Afterglow uses your location only to notice when you leave a place and to show nearby residue. It does not show who is here.",
+        "NSMicrophoneUsageDescription": "Afterglow records an 8–12 second voice note only after you start recording.",
+        "NSCameraUsageDescription": "Afterglow takes a still photo you choose to leave. A face is not required."
+      }
+    },
+    "android": {
+      "package": "com.sofaloaf.afterglow",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#14110e"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "RECORD_AUDIO",
+        "CAMERA"
+      ],
+      "blockedPermissions": [
+        "ACCESS_BACKGROUND_LOCATION"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Afterglow uses your location only to notice when you leave a place and to show nearby residue. It does not show who is here.",
+          "isAndroidBackgroundLocationEnabled": false,
+          "isIosBackgroundLocationEnabled": false
+        }
+      ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Afterglow records an 8–12 second voice note only after you start recording.",
+          "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Afterglow takes a still photo you choose to leave. A face is not required.",
+          "photosPermission": "Afterglow can use a still you already took. A face is not required."
+        }
+      ]
+    ],
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "extra": {
+      "freeForever": true,
+      "payments": "none"
+    }
+  }
+}
