@@ -4,9 +4,10 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Screen } from '../src/components/Screen';
 import { TapeButton } from '../src/components/TapeButton';
+import { rememberShown } from '../src/data/residueIndex';
 import { FALLBACK_ORIGIN, sampleAfterglowsNear } from '../src/data/sampleAfterglows';
 import { PROMPT } from '../src/doctrine';
-import { formatDistance } from '../src/geo';
+import { distanceMeters, formatDistance } from '../src/geo';
 import {
   getCurrentCoord,
   getForegroundPermission,
@@ -39,6 +40,7 @@ export default function FieldScreen() {
     const nearby = [...local, ...sampleAfterglowsNear(origin)].sort(
       (a, b) => b.createdAt - a.createdAt,
     );
+    rememberShown(nearby);
     setItems(nearby);
   }, []);
 
@@ -78,16 +80,7 @@ export default function FieldScreen() {
       )}
 
       {items.map((item) => {
-        const distance = formatDistance(
-          Math.round(
-            Math.hypot(
-              (item.coord.latitude - origin.latitude) * 111000,
-              (item.coord.longitude - origin.longitude) *
-                111000 *
-                Math.cos((origin.latitude * Math.PI) / 180),
-            ),
-          ),
-        );
+        const distance = formatDistance(distanceMeters(origin, item.coord));
         return (
           <Pressable
             key={item.id}

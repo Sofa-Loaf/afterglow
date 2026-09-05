@@ -12,6 +12,7 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { Screen } from '../src/components/Screen';
 import { TapeButton } from '../src/components/TapeButton';
+import { rememberOne } from '../src/data/residueIndex';
 import { FALLBACK_ORIGIN } from '../src/data/sampleAfterglows';
 import { CAPTURE, PROMPT } from '../src/doctrine';
 import { getCurrentCoord } from '../src/location/permissions';
@@ -48,7 +49,7 @@ export default function CaptureScreen() {
   }) {
     const now = Date.now();
     const coord = (await getCurrentCoord()) ?? FALLBACK_ORIGIN;
-    await saveAfterglow({
+    const item = {
       id: newId(),
       kind: partial.kind,
       createdAt: now,
@@ -56,9 +57,11 @@ export default function CaptureScreen() {
       coord,
       line: partial.line,
       mediaUri: partial.mediaUri,
-      origin: 'local',
+      origin: 'local' as const,
       placeHint: partial.placeHint ?? 'this place',
-    });
+    };
+    await saveAfterglow(item);
+    rememberOne(item);
     router.replace('/');
   }
 

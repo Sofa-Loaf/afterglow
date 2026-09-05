@@ -5,6 +5,7 @@ import { Image, StyleSheet, Text } from 'react-native';
 
 import { Screen } from '../../src/components/Screen';
 import { TapeButton } from '../../src/components/TapeButton';
+import { findShown, routeId } from '../../src/data/residueIndex';
 import { FALLBACK_ORIGIN, sampleAfterglowsNear } from '../../src/data/sampleAfterglows';
 import { getAfterglow } from '../../src/storage/ephemeralStore';
 import { color, font } from '../../src/theme';
@@ -12,17 +13,19 @@ import { ageLabel } from '../../src/ttl';
 import type { Afterglow } from '../../src/types';
 
 export default function ResidueScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const params = useLocalSearchParams<{ id: string }>();
+  const id = routeId(params.id);
   const router = useRouter();
-  const [item, setItem] = useState<Afterglow | null>(null);
+  const [item, setItem] = useState<Afterglow | null>(() => findShown(id));
   const player = useAudioPlayer(item?.kind === 'voice' ? item.mediaUri : undefined);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
+      const cached = findShown(id);
       const local = id ? await getAfterglow(id) : null;
       const sample = sampleAfterglowsNear(FALLBACK_ORIGIN).find((entry) => entry.id === id) ?? null;
-      if (!cancelled) setItem(local ?? sample);
+      if (!cancelled) setItem(cached ?? local ?? sample);
     })();
     return () => {
       cancelled = true;
@@ -44,7 +47,9 @@ export default function ResidueScreen() {
       <Text style={styles.title}>at {item.placeHint}</Text>
       <Text style={styles.meta}>{ageLabel(item.createdAt)} · fades on its own</Text>
 
-      {item.kind === 'line' ? <Text style={styles.line}>{item.line}</Text> : null}
+      {item.kind === 'line' ? (
+        <Text style={styles.line}>{item.line || 'A line was left here.'}</Text>
+      ) : null}
 
       {item.kind === 'still' && item.mediaUri ? (
         <Image source={{ uri: item.mediaUri }} style={styles.still} accessibilityLabel="Still afterglow" />
