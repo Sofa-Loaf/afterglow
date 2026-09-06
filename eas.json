@@ -1,32 +1,44 @@
 {
   "cli": {
     "version": ">= 16.0.0",
-    "appVersionSource": "local"
+    "appVersionSource": "local",
+    "promptToConfigurePushNotifications": false
   },
   "build": {
     "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "env": {
+        "AFTERGLOW_ANDROID_PACKAGE": "me.to28.afterglow"
+      },
       "android": {
         "buildType": "apk"
       }
     },
     "preview": {
       "distribution": "internal",
+      "env": {
+        "AFTERGLOW_ANDROID_PACKAGE": "me.to28.afterglow"
+      },
       "android": {
         "buildType": "apk"
       }
     },
     "production": {
+      "env": {
+        "AFTERGLOW_ANDROID_PACKAGE": "me.to28.afterglow"
+      },
       "android": {
         "buildType": "app-bundle"
-      }
+      },
+      "autoIncrement": false
     }
   },
   "submit": {
     "production": {
       "android": {
-        "track": "internal"
+        "track": "internal",
+        "releaseStatus": "draft"
       }
     }
   }

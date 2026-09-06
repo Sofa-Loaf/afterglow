@@ -1,25 +1,45 @@
-import { StyleSheet, Text } from 'react-native';
+import { Linking, StyleSheet, Text } from 'react-native';
 
 import { Screen } from '../src/components/Screen';
 import { DOCTRINE_LINES, PRODUCT } from '../src/doctrine';
 import { storageNote } from '../src/storage/ephemeralStore';
-import { color, font } from '../src/theme';
+import { color, font, glow } from '../src/theme';
+
+const POLICY_URL = 'https://28to3.me/apps/afterglow.html#privacy';
 
 export default function PrivacyScreen() {
   return (
     <Screen>
       <Text style={styles.kicker}>{PRODUCT.name}</Text>
       <Text style={styles.title}>Quiet by default</Text>
+      <Text style={styles.line}>
+        Afterglow is free. There is no account and no Stripe. Location, microphone, and photos stay
+        on this device for the feature you chose. They are not sold.
+      </Text>
       {DOCTRINE_LINES.map((line) => (
         <Text key={line} style={styles.line}>
           {line}
         </Text>
       ))}
+      <Text style={styles.heading}>What this build uses</Text>
       <Text style={styles.line}>{storageNote}</Text>
       <Text style={styles.line}>
-        v0 asks for foreground GPS (leave detection and the fifty-foot gate), microphone (voice),
-        and camera (still). Background location is off. There is no account, no Stripe, and no live
-        presence.
+        Precise GPS (foreground only) notices when you leave and gates listening to about fifty
+        feet (~15 m) of the pin. The microphone records an 8–12 second voice note only after you
+        start. The camera or a photo you pick is only for a still you choose. A face is not
+        required.
+      </Text>
+      <Text style={styles.line}>
+        Background location is off. There is no live “who’s here,” no feed, and no ads SDK.
+      </Text>
+      <Text
+        style={styles.link}
+        accessibilityRole="link"
+        onPress={() => {
+          void Linking.openURL(POLICY_URL);
+        }}
+      >
+        Full policy on 28to3.me
       </Text>
     </Screen>
   );
@@ -27,18 +47,27 @@ export default function PrivacyScreen() {
 
 const styles = StyleSheet.create({
   kicker: {
-    color: color.amber,
+    color: color.amberSoft,
     fontFamily: font.mono,
     fontSize: 12,
-    letterSpacing: 1.4,
+    letterSpacing: 1.8,
     textTransform: 'uppercase',
     marginBottom: 10,
+    ...glow.text,
   },
   title: {
     color: color.ink,
     fontFamily: font.serif,
     fontSize: 28,
     marginBottom: 18,
+    ...glow.text,
+  },
+  heading: {
+    color: color.ink,
+    fontFamily: font.serif,
+    fontSize: 20,
+    marginTop: 8,
+    marginBottom: 12,
   },
   line: {
     color: color.dust,
@@ -46,5 +75,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     marginBottom: 12,
+  },
+  link: {
+    color: color.amberSoft,
+    fontFamily: font.serif,
+    fontSize: 16,
+    marginTop: 8,
+    textDecorationLine: 'underline',
   },
 });

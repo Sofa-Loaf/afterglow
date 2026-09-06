@@ -15,7 +15,7 @@ import {
   requestForegroundPermission,
 } from '../src/location/permissions';
 import { listLocalAfterglows } from '../src/storage/ephemeralStore';
-import { color, font } from '../src/theme';
+import { color, font, glow } from '../src/theme';
 import { ageLabel } from '../src/ttl';
 import type { Afterglow, Coord, PermissionState } from '../src/types';
 
@@ -56,9 +56,10 @@ export default function FieldScreen() {
   return (
     <Screen>
       <Text style={styles.kicker}>whispers nearby</Text>
+      <Text style={styles.tagline}>Whispers left where you stood.</Text>
       <Text style={styles.lede}>
-        Whispers from who stood right here. Not a review of the place. You have to be at the same
-        spot — {ACCESS_COPY.radius}.
+        Not a review of the place. You hear a whisper only at the same pin — {ACCESS_COPY.radius}.
+        Then you move on.
       </Text>
 
       {permission !== 'granted' ? (
@@ -117,18 +118,27 @@ export default function FieldScreen() {
 
 const styles = StyleSheet.create({
   kicker: {
-    color: color.amber,
+    color: color.amberSoft,
     fontFamily: font.mono,
     fontSize: 12,
-    letterSpacing: 1.4,
+    letterSpacing: 1.8,
     textTransform: 'uppercase',
-    marginBottom: 10,
+    marginBottom: 8,
+    ...glow.text,
   },
-  lede: {
+  tagline: {
     color: color.ink,
     fontFamily: font.serif,
-    fontSize: 22,
-    lineHeight: 30,
+    fontSize: 26,
+    lineHeight: 34,
+    marginBottom: 10,
+    ...glow.text,
+  },
+  lede: {
+    color: color.dust,
+    fontFamily: font.serif,
+    fontSize: 17,
+    lineHeight: 26,
     marginBottom: 18,
   },
   meta: {
@@ -157,7 +167,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
   },
   rowKind: {
-    color: color.amber,
+    color: color.amberSoft,
     fontFamily: font.mono,
     fontSize: 11,
     letterSpacing: 1,

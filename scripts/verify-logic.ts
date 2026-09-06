@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 import {
   canHearResidue,
@@ -13,6 +15,19 @@ import { ACCESS_COPY, CAPTURE, PRODUCT, RESIDUE } from '../src/doctrine';
 import { distanceMeters, isOutsideGeofence, offsetMeters } from '../src/geo';
 import { reduceLeaveState, resetLeaveState } from '../src/location/leaveDetection';
 import { expiresAt, isExpired } from '../src/ttl';
+
+const root = process.cwd();
+const appJson = JSON.parse(readFileSync(join(root, 'app.json'), 'utf8')) as {
+  expo: { android?: { package?: string }; extra?: { androidPackage?: string } };
+};
+const easJson = JSON.parse(readFileSync(join(root, 'eas.json'), 'utf8')) as {
+  build?: { production?: { android?: { buildType?: string }; env?: { AFTERGLOW_ANDROID_PACKAGE?: string } } };
+};
+
+assert.equal(appJson.expo.android?.package, 'me.to28.afterglow');
+assert.equal(appJson.expo.extra?.androidPackage, 'me.to28.afterglow');
+assert.equal(easJson.build?.production?.android?.buildType, 'app-bundle');
+assert.equal(easJson.build?.production?.env?.AFTERGLOW_ANDROID_PACKAGE, 'me.to28.afterglow');
 
 assert.equal(PRODUCT.freeForever, true);
 assert.equal(PRODUCT.payments, 'none');
