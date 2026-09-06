@@ -11,7 +11,7 @@ import { FALLBACK_ORIGIN, sampleAfterglowsNear } from '../../src/data/sampleAfte
 import { ACCESS_COPY } from '../../src/doctrine';
 import { getCurrentCoord } from '../../src/location/permissions';
 import { getAfterglow } from '../../src/storage/ephemeralStore';
-import { color, font } from '../../src/theme';
+import { color, font, glow } from '../../src/theme';
 import { ageLabel } from '../../src/ttl';
 import type { Afterglow, Coord } from '../../src/types';
 
@@ -110,18 +110,20 @@ export default function ResidueScreen() {
 
 const styles = StyleSheet.create({
   kicker: {
-    color: color.amber,
+    color: color.amberSoft,
     fontFamily: font.mono,
     fontSize: 12,
-    letterSpacing: 1.4,
+    letterSpacing: 1.8,
     textTransform: 'uppercase',
     marginBottom: 10,
+    ...glow.text,
   },
   title: {
     color: color.ink,
     fontFamily: font.serif,
     fontSize: 28,
     marginBottom: 8,
+    ...glow.text,
   },
   meta: {
     color: color.dust,

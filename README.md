@@ -32,7 +32,8 @@ v0 includes:
 - `plays` field stub for later ranking at a landmark cluster (rank residue, never the place)
 - Local / ephemeral storage stub (device only, TTL purge)
 - In-app privacy + [docs/PRIVACY.md](docs/PRIVACY.md)
-- Play checklist: [docs/PLAY_STORE.md](docs/PLAY_STORE.md)
+- Play submit pack: [docs/PLAY_STORE.md](docs/PLAY_STORE.md)
+- Locked brand: `assets/brand/afterglow-wordmark.png`, `afterglow-app-icon.png`, `afterglow-play-feature.png`
 
 This is a scaffold. It is **not** a store submission and does **not** claim Play or App Store approval.
 
@@ -55,7 +56,7 @@ npx expo start --web   # optional UI check; native capture is the real path
 
 ## Android build path
 
-Package name: `com.sofaloaf.afterglow`.
+Package name: `me.to28.afterglow`.
 
 ```bash
 # APK for testers (EAS; John logs into Expo first)
@@ -63,8 +64,8 @@ npx eas-cli@latest login
 npx eas-cli@latest init
 npx eas-cli@latest build --platform android --profile preview
 
-# AAB for Play production track
-npx eas-cli@latest build --platform android --profile production
+# AAB for Play production track (exact command)
+eas build -p android --profile production
 ```
 
 Local (Android SDK on the machine):
@@ -83,7 +84,7 @@ Then assemble with Android Studio / Gradle. Generated `android/` is gitignored.
 
 1. Google Play Console — **$25 one-time**
 2. Free Expo account (EAS)
-3. Privacy policy URL **now**: https://28to3.me/apps/afterglow.html (fallback https://28to3.me/privacy). Do not wait on afterglow.com.
+3. Privacy policy URL **now**: https://28to3.me/apps/afterglow.html#privacy (fallback [docs/PRIVACY.md](docs/PRIVACY.md)). Do not wait on afterglow.com.
 4. Screenshots + feature graphic + Data safety + content rating (see [docs/PLAY_STORE.md](docs/PLAY_STORE.md))
 
 **Later, not a blocker:** Apple Developer Program (~$99/year) for iOS.

@@ -7,7 +7,7 @@ import { TapeButton } from '../src/components/TapeButton';
 import { FALLBACK_ORIGIN } from '../src/data/sampleAfterglows';
 import { ACCESS_COPY, PROMPT } from '../src/doctrine';
 import { reduceLeaveState, resetLeaveState } from '../src/location/leaveDetection';
-import { color, font } from '../src/theme';
+import { color, font, glow } from '../src/theme';
 
 export default function LeaveScreen() {
   const router = useRouter();
@@ -45,12 +45,13 @@ export default function LeaveScreen() {
 
 const styles = StyleSheet.create({
   kicker: {
-    color: color.amber,
+    color: color.amberSoft,
     fontFamily: font.mono,
     fontSize: 12,
-    letterSpacing: 1.4,
+    letterSpacing: 1.8,
     textTransform: 'uppercase',
     marginBottom: 14,
+    ...glow.text,
   },
   prompt: {
     color: color.ink,
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     lineHeight: 40,
     marginBottom: 16,
+    ...glow.text,
   },
   body: {
     color: color.dust,

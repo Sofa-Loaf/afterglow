@@ -17,7 +17,7 @@ import { FALLBACK_ORIGIN } from '../src/data/sampleAfterglows';
 import { CAPTURE, PROMPT } from '../src/doctrine';
 import { getCurrentCoord } from '../src/location/permissions';
 import { saveAfterglow } from '../src/storage/ephemeralStore';
-import { color, font } from '../src/theme';
+import { color, font, glow } from '../src/theme';
 import { expiresAt } from '../src/ttl';
 import type { CaptureKind } from '../src/types';
 
@@ -198,18 +198,20 @@ export default function CaptureScreen() {
 
 const styles = StyleSheet.create({
   kicker: {
-    color: color.amber,
+    color: color.amberSoft,
     fontFamily: font.mono,
     fontSize: 12,
-    letterSpacing: 1.4,
+    letterSpacing: 1.8,
     textTransform: 'uppercase',
     marginBottom: 10,
+    ...glow.text,
   },
   title: {
     color: color.ink,
     fontFamily: font.serif,
     fontSize: 28,
     marginBottom: 12,
+    ...glow.text,
   },
   body: {
     color: color.dust,
@@ -226,7 +228,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   meter: {
-    color: color.amber,
+    color: color.amberSoft,
     fontFamily: font.mono,
     fontSize: 16,
     marginBottom: 12,

@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
 
-import { color, font } from '../theme';
+import { color, font, glow } from '../theme';
 
 type Props = {
   label: string;
@@ -10,6 +10,7 @@ type Props = {
 };
 
 export function TapeButton({ label, onPress, kind = 'primary', disabled }: Props) {
+  const primary = kind !== 'quiet';
   return (
     <Pressable
       accessibilityRole="button"
@@ -17,12 +18,13 @@ export function TapeButton({ label, onPress, kind = 'primary', disabled }: Props
       disabled={disabled}
       style={({ pressed }) => [
         styles.base,
-        kind === 'quiet' ? styles.quiet : styles.primary,
+        primary ? styles.primary : styles.quiet,
+        primary && glow.panel,
         pressed && styles.pressed,
         disabled && styles.disabled,
       ]}
     >
-      <Text style={[styles.label, kind === 'quiet' && styles.quietLabel]}>{label}</Text>
+      <Text style={[styles.label, !primary && styles.quietLabel, primary && glow.text]}>{label}</Text>
     </Pressable>
   );
 }
