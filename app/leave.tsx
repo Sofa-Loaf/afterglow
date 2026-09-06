@@ -5,7 +5,7 @@ import { StyleSheet, Text } from 'react-native';
 import { Screen } from '../src/components/Screen';
 import { TapeButton } from '../src/components/TapeButton';
 import { FALLBACK_ORIGIN } from '../src/data/sampleAfterglows';
-import { PROMPT } from '../src/doctrine';
+import { ACCESS_COPY, PROMPT } from '../src/doctrine';
 import { reduceLeaveState, resetLeaveState } from '../src/location/leaveDetection';
 import { color, font } from '../src/theme';
 
@@ -26,12 +26,13 @@ export default function LeaveScreen() {
       <Text style={styles.kicker}>after you leave</Text>
       <Text style={styles.prompt}>{PROMPT.leave}</Text>
       <Text style={styles.body}>
-        A voice of 8–12 seconds. A still photo — no face required. Or one line. Then you move on.
-        There is no post, no like, no comment.
+        GPS noticed you left. A voice of 8–12 seconds. A still — no face required. Or one line. A
+        whisper from who stood right there. Not a review. Then you move on.
       </Text>
       <Text style={styles.meta}>
-        Leave detection is a foreground stub in v0. Background geofencing is off so Play listing
-        does not need background location. Phase: {state.phase}.
+        Leave detection uses GPS in the foreground. The pin is precise; {ACCESS_COPY.radius} is the
+        gate. Background geofencing is off so Play does not need background location. Phase:{' '}
+        {state.phase}.
       </Text>
       {!simulated ? (
         <TapeButton label="Simulate leaving" kind="quiet" onPress={() => setSimulated(true)} />

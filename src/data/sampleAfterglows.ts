@@ -18,23 +18,26 @@ const FIXTURES: Array<{
   eastM: number;
   placeHint: string;
   line?: string;
+  plays: number;
 }> = [
   {
     id: 'sample-bench',
     kind: 'line',
     hoursAgo: 5,
-    northM: 28,
-    eastM: -12,
+    northM: 8,
+    eastM: -4,
     placeHint: 'the bench',
     line: 'The light on the brick was enough.',
+    plays: 3,
   },
   {
     id: 'sample-steps',
     kind: 'voice',
     hoursAgo: 18,
-    northM: -40,
-    eastM: 22,
+    northM: -6,
+    eastM: 8,
     placeHint: 'the steps',
+    plays: 1,
   },
   {
     id: 'sample-corner',
@@ -43,6 +46,7 @@ const FIXTURES: Array<{
     northM: 15,
     eastM: 45,
     placeHint: 'the corner',
+    plays: 12,
   },
   {
     id: 'sample-door',
@@ -52,6 +56,7 @@ const FIXTURES: Array<{
     eastM: -38,
     placeHint: 'the doorway',
     line: 'Rain on the awning. Then quiet.',
+    plays: 0,
   },
 ];
 
@@ -67,6 +72,7 @@ export function sampleAfterglowsNear(origin: Coord, now: number = Date.now()): A
       line: fixture.line,
       origin: 'sample' as const,
       placeHint: fixture.placeHint,
+      plays: fixture.plays,
     };
   });
 }

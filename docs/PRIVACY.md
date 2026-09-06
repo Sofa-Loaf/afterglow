@@ -9,16 +9,20 @@ This file is the in-repo source for that page. Afterglow is free. There is no St
 
 On this device only, if you choose to leave an afterglow:
 
-- Approximate coordinates of the capture
+- Precise coordinates of the pin (the afterglow stays at that spot)
 - One of: an 8–12 second voice note, a still photo, or one line of text
 - A created/expiry timestamp
+- A local `plays` count (stub; used later to rank residue at a landmark, never to rate the place)
 
-Sample nearby residue is bundled in the app for the v0 map/list. It is not other people’s live data.
+GPS is the trigger: foreground location notices when you leave, and gates listening or seeing an afterglow to about fifty feet (~15 m) of the pin. The pin is precise; the radius is only the access gate.
+
+Sample nearby residue is bundled in the app for the v0 list. Entries outside the fifty-foot gate are hidden. It is not other people’s live data.
 
 ## What we do not do
 
 - No account, email, or phone number
-- No feed, likes, comments, or place ranking
+- No feed, likes, comments, or star ratings
+- No reviews of the place
 - No live “who’s here”
 - No background location in v0
 - No sale of data

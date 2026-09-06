@@ -1,4 +1,4 @@
-/** Locked product doctrine. Do not add a feed, likes, comments, ranking, or payments. */
+/** Locked product doctrine. Do not add a feed, likes, comments, place ratings, or payments. */
 
 export const PRODUCT = {
   name: 'Afterglow',
@@ -16,8 +16,16 @@ export const RESIDUE = {
   defaultTtlDays: 14,
   minTtlDays: 3,
   maxTtlDays: 28,
-  geofenceRadiusMeters: 80,
+  /**
+   * Access gate only. The pin is the precise lat/lng.
+   * ~50 ft — tight enough for a hotel room, a hallway, an exact patch of grass.
+   */
+  accessRadiusMeters: 15,
+  accessRadiusFeetApprox: 50,
 } as const;
+
+/** @deprecated Use RESIDUE.accessRadiusMeters. Leave detection shares the same gate. */
+export const GEOFENCE_RADIUS_M = RESIDUE.accessRadiusMeters;
 
 export const PROMPT = {
   leave: 'Want to leave an afterglow?',
@@ -25,13 +33,21 @@ export const PROMPT = {
   leaveIt: 'Leave it',
 } as const;
 
+export const ACCESS_COPY = {
+  radius: 'about fifty feet',
+  radiusShort: '~50 ft',
+  tooFar: 'This whisper stays at the pin. Stand within about fifty feet.',
+  emptyNearby: 'Nothing within fifty feet. Walk to the pin, or leave a whisper when you go.',
+} as const;
+
 export const DOCTRINE_LINES = [
-  'After you leave a place, Afterglow asks quietly: “Want to leave an afterglow?”',
+  'GPS is the trigger. Afterglow notices when you leave; you hear a whisper only at the same spot.',
+  'About fifty feet (~15 m) — a hotel room, a hallway, an exact patch of grass. The pin is precise; the radius is only the gate.',
   'Capture only: an 8–12s voice note, a still photo (no face required), or one line.',
   'No feed. No likes on capture. No “post.”',
-  'Later, someone at that same spot can hear or see recent residue. Not reviews. Not ratings. Not Yelp.',
+  'Not reviews. A whisper from who stood right there.',
   'Anonymous by default. Short-lived (days–weeks). No comments on others’ afterglows.',
-  'No live “who’s here.” No place ranking.',
-  'Field-recorder aesthetic.',
+  'No live “who’s here.” Never rate the place. When a landmark gathers whispers, rank them by plays — no stars.',
+  'Whispers from the past. Field recorder. Haunting, small.',
   'Free forever. No Stripe. No IAP. No ads.',
 ] as const;
