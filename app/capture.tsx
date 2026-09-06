@@ -59,6 +59,7 @@ export default function CaptureScreen() {
       mediaUri: partial.mediaUri,
       origin: 'local' as const,
       placeHint: partial.placeHint ?? 'this place',
+      plays: 0,
     };
     await saveAfterglow(item);
     rememberOne(item);
@@ -134,8 +135,8 @@ export default function CaptureScreen() {
 
   return (
     <Screen>
-      <Text style={styles.kicker}>not a post</Text>
-      <Text style={styles.title}>Leave an afterglow</Text>
+      <Text style={styles.kicker}>not a review</Text>
+      <Text style={styles.title}>Leave a whisper</Text>
       <Text style={styles.body}>{status}</Text>
 
       {kind === null ? (

@@ -2,17 +2,20 @@
 
 Free. After you leave a place, leave a quiet residue — then move on.
 
-Not reviews. Not a feed. Field-recorder aesthetic.
+Not reviews. A whisper from who stood *right there*. Field recorder. Haunting, small.
 
 ## Product doctrine (locked)
 
-- After you leave a place, the app asks quietly: **“Want to leave an afterglow?”**
-- Capture **only**: an **8–12s voice note**, a **still photo** (no face required), **or one line**.
-- No feed. No likes on capture. No “post.”
-- Later, someone at that same spot can hear or see recent residue. Not reviews, ratings, or Yelp.
-- Anonymous default. Short-lived (days–weeks). No comments on others’ afterglows.
-- No live “who’s here.” No place ranking.
-- **Free forever.** No Stripe. No IAP. No ads.
+1. **GPS is the trigger.** Leave detection uses GPS. Playback requires being at the same spot.
+2. **~50 foot (~15 m) radius** to listen or see an afterglow — tight enough for a hotel room, a hallway, an exact patch of grass. The pin is precise (lat/lng). The radius is the access gate only.
+3. **Not reviews.** A whisper from who stood right there.
+4. **Ranking by plays** (later, when volume exists): at a landmark pin cluster, show top afterglows by play count. Rank the residue, never rate the place. No star ratings.
+5. After you leave a place, the app asks quietly: **“Want to leave an afterglow?”**
+6. Capture **only**: an **8–12s voice note**, a **still photo** (no face required), **or one line**.
+7. No feed. No likes on capture. No “post.”
+8. Anonymous default. Short-lived (days–weeks). No comments on others’ afterglows.
+9. No live “who’s here.” Never rate the place.
+10. **Free forever.** No Stripe. No IAP. No ads.
 
 This repository is **Afterglow only**. It does not include Minute Cheat Sheet or Actionscope.
 
@@ -22,10 +25,11 @@ Expo SDK 54 scaffold. **Android / Play first.** iOS is not blocked (same codebas
 
 v0 includes:
 
-- Foreground location permission
+- Foreground GPS permission (leave detection + the fifty-foot access gate)
 - Leave-prompt screen + geofence/leave-detection **stub** (plus Simulate leaving)
 - Capture: voice 8–12s, still, or one line
-- Nearby residue **list** with bundled sample data
+- Nearby residue **list** filtered to **15 m / ~50 ft** of the pin
+- `plays` field stub for later ranking at a landmark cluster (rank residue, never the place)
 - Local / ephemeral storage stub (device only, TTL purge)
 - In-app privacy + [docs/PRIVACY.md](docs/PRIVACY.md)
 - Play checklist: [docs/PLAY_STORE.md](docs/PLAY_STORE.md)

@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { withPlays } from '../access';
 import { isExpired } from '../ttl';
 import type { Afterglow } from '../types';
 
@@ -10,7 +11,7 @@ async function readAll(): Promise<Afterglow[]> {
   if (!raw) return [];
   try {
     const parsed = JSON.parse(raw) as Afterglow[];
-    return Array.isArray(parsed) ? parsed : [];
+    return Array.isArray(parsed) ? parsed.map(withPlays) : [];
   } catch {
     return [];
   }
@@ -32,7 +33,7 @@ export async function listLocalAfterglows(): Promise<Afterglow[]> {
 
 export async function saveAfterglow(item: Afterglow): Promise<void> {
   const current = await purgeExpired();
-  await writeAll([item, ...current.filter((existing) => existing.id !== item.id)]);
+  await writeAll([withPlays(item), ...current.filter((existing) => existing.id !== item.id)]);
 }
 
 export async function getAfterglow(id: string): Promise<Afterglow | null> {

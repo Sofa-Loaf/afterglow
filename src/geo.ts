@@ -31,7 +31,7 @@ export function offsetMeters(origin: Coord, northM: number, eastM: number): Coor
 }
 
 export function formatDistance(meters: number): string {
-  if (!Number.isFinite(meters)) return 'nearby';
+  if (!Number.isFinite(meters)) return 'right here';
   if (meters < 20) return 'right here';
   if (meters < 1000) return `${Math.round(meters)} m`;
   return `${(meters / 1000).toFixed(1)} km`;

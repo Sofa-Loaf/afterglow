@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "main": "expo-router/entry",
-  "description": "Afterglow — leave a quiet residue when you leave a place. Free. No feed. No likes.",
+  "description": "Afterglow — whispers from who stood right here. Free. Not reviews. No feed.",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",

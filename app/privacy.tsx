@@ -17,8 +17,9 @@ export default function PrivacyScreen() {
       ))}
       <Text style={styles.line}>{storageNote}</Text>
       <Text style={styles.line}>
-        v0 asks for foreground location, microphone (voice), and camera (still). Background location
-        is off. There is no account, no Stripe, and no live presence.
+        v0 asks for foreground GPS (leave detection and the fifty-foot gate), microphone (voice),
+        and camera (still). Background location is off. There is no account, no Stripe, and no live
+        presence.
       </Text>
     </Screen>
   );

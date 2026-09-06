@@ -17,6 +17,11 @@ export type Afterglow = {
   mediaUri?: string;
   origin: 'local' | 'sample';
   placeHint: string;
+  /**
+   * Play count. Stub for later ranking at a landmark pin cluster.
+   * Rank the residue, never rate the place. No stars.
+   */
+  plays: number;
 };
 
 export type PermissionState = 'unknown' | 'granted' | 'denied';

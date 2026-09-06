@@ -2,11 +2,12 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { residueInReach } from '../src/access';
 import { Screen } from '../src/components/Screen';
 import { TapeButton } from '../src/components/TapeButton';
 import { rememberShown } from '../src/data/residueIndex';
 import { FALLBACK_ORIGIN, sampleAfterglowsNear } from '../src/data/sampleAfterglows';
-import { PROMPT } from '../src/doctrine';
+import { ACCESS_COPY, PROMPT } from '../src/doctrine';
 import { distanceMeters, formatDistance } from '../src/geo';
 import {
   getCurrentCoord,
@@ -37,7 +38,7 @@ export default function FieldScreen() {
     const origin = coord ?? FALLBACK_ORIGIN;
     setHere(coord);
     const local = await listLocalAfterglows();
-    const nearby = [...local, ...sampleAfterglowsNear(origin)].sort(
+    const nearby = residueInReach([...local, ...sampleAfterglowsNear(origin)], origin).sort(
       (a, b) => b.createdAt - a.createdAt,
     );
     rememberShown(nearby);
@@ -54,16 +55,17 @@ export default function FieldScreen() {
 
   return (
     <Screen>
-      <Text style={styles.kicker}>residue nearby</Text>
+      <Text style={styles.kicker}>whispers nearby</Text>
       <Text style={styles.lede}>
-        Recent afterglows at this spot. Not a feed. Not a ranking. They fade on their own.
+        Whispers from who stood right here. Not a review of the place. You have to be at the same
+        spot — {ACCESS_COPY.radius}.
       </Text>
 
       {permission !== 'granted' ? (
         <View style={styles.panel}>
           <Text style={styles.panelText}>
-            Location stays on-device and is used only to notice when you leave, and to show residue
-            near you. No live “who’s here.”
+            GPS is the trigger. Location stays on-device. Afterglow notices when you leave, and only
+            shows residue within {ACCESS_COPY.radius} of the pin. No live “who’s here.”
           </Text>
           <TapeButton
             label="Allow location"
@@ -75,9 +77,14 @@ export default function FieldScreen() {
         </View>
       ) : (
         <Text style={styles.meta}>
-          {here ? 'Using this place' : 'Using sample coordinates'} · foreground only
+          {here ? 'At this pin' : 'Using sample coordinates'} · {ACCESS_COPY.radiusShort} ·
+          foreground only
         </Text>
       )}
+
+      {items.length === 0 ? (
+        <Text style={styles.empty}>{ACCESS_COPY.emptyNearby}</Text>
+      ) : null}
 
       {items.map((item) => {
         const distance = formatDistance(distanceMeters(origin, item.coord));
@@ -168,6 +175,14 @@ const styles = StyleSheet.create({
     fontFamily: font.mono,
     fontSize: 12,
     marginTop: 6,
+  },
+  empty: {
+    color: color.dust,
+    fontFamily: font.serif,
+    fontSize: 16,
+    lineHeight: 24,
+    marginBottom: 18,
+    fontStyle: 'italic',
   },
   spacer: {
     height: 28,

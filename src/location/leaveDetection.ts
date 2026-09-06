@@ -9,7 +9,8 @@ export type LeaveState = {
   dwell: Coord | null;
 };
 
-export const GEOFENCE_RADIUS_M = RESIDUE.geofenceRadiusMeters;
+/** Leave detection shares the access gate: GPS trigger, ~50 ft / 15 m. */
+export const GEOFENCE_RADIUS_M = RESIDUE.accessRadiusMeters;
 
 /**
  * Foreground leave-detection stub.

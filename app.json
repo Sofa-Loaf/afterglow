@@ -17,7 +17,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.sofaloaf.afterglow",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Afterglow uses your location only to notice when you leave a place and to show nearby residue. It does not show who is here.",
+        "NSLocationWhenInUseUsageDescription": "Afterglow uses GPS to notice when you leave, and to let you hear a whisper only at the same spot — about fifty feet. It does not show who is here.",
         "NSMicrophoneUsageDescription": "Afterglow records an 8–12 second voice note only after you start recording.",
         "NSCameraUsageDescription": "Afterglow takes a still photo you choose to leave. A face is not required."
       }
@@ -45,7 +45,7 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Afterglow uses your location only to notice when you leave a place and to show nearby residue. It does not show who is here.",
+          "locationWhenInUsePermission": "Afterglow uses GPS to notice when you leave, and to let you hear a whisper only at the same spot — about fifty feet. It does not show who is here.",
           "isAndroidBackgroundLocationEnabled": false,
           "isIosBackgroundLocationEnabled": false
         }
