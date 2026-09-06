@@ -11,6 +11,15 @@ export function isWithinAccessRadius(
   return distanceMeters(here, pin) <= radiusM;
 }
 
+/**
+ * Playback gate. Prefer a live fix vs the pin. If GPS jitters, staying at the
+ * nearby-list origin still counts as the same spot.
+ */
+export function canHearResidue(here: Coord, pin: Coord, listOrigin: Coord | null = null): boolean {
+  if (isWithinAccessRadius(here, pin)) return true;
+  return listOrigin !== null && isWithinAccessRadius(here, listOrigin);
+}
+
 /** Nearby list — only residue you can stand inside the gate for. */
 export function residueInReach(
   items: Afterglow[],

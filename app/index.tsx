@@ -41,7 +41,7 @@ export default function FieldScreen() {
     const nearby = residueInReach([...local, ...sampleAfterglowsNear(origin)], origin).sort(
       (a, b) => b.createdAt - a.createdAt,
     );
-    rememberShown(nearby);
+    rememberShown(nearby, origin);
     setItems(nearby);
   }, []);
 

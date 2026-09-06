@@ -1,6 +1,13 @@
 import assert from 'node:assert/strict';
 
-import { isWithinAccessRadius, rankByPlays, residueInReach, withPlays } from '../src/access';
+import {
+  canHearResidue,
+  isWithinAccessRadius,
+  rankByPlays,
+  residueInReach,
+  withPlays,
+} from '../src/access';
+import { gateOrigin, rememberShown } from '../src/data/residueIndex';
 import { sampleAfterglowsNear } from '../src/data/sampleAfterglows';
 import { ACCESS_COPY, CAPTURE, PRODUCT, RESIDUE } from '../src/doctrine';
 import { distanceMeters, isOutsideGeofence, offsetMeters } from '../src/geo';
@@ -42,6 +49,13 @@ const ranked = rankByPlays(samples);
 assert.ok(ranked[0].plays >= ranked[1].plays);
 assert.equal(ranked[0].id, 'sample-corner');
 assert.equal(withPlays({ ...samples[0], plays: Number.NaN }).plays, 0);
+
+rememberShown(nearby, origin);
+assert.deepEqual(gateOrigin(null, far), origin);
+assert.deepEqual(gateOrigin(justOut, far), justOut);
+assert.equal(canHearResidue(origin, nearby[0].coord, origin), true);
+assert.equal(canHearResidue(inside, nearby[0].coord, origin), true);
+assert.equal(canHearResidue(far, nearby[0].coord, origin), false);
 
 const created = Date.UTC(2026, 0, 1);
 assert.equal(isExpired(expiresAt(created, 14), created + 13 * 24 * 60 * 60 * 1000), false);

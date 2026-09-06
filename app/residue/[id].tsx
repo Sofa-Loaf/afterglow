@@ -3,10 +3,10 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text } from 'react-native';
 
-import { isWithinAccessRadius } from '../../src/access';
+import { canHearResidue } from '../../src/access';
 import { Screen } from '../../src/components/Screen';
 import { TapeButton } from '../../src/components/TapeButton';
-import { findShown, routeId } from '../../src/data/residueIndex';
+import { findShown, gateOrigin, routeId, shownAt } from '../../src/data/residueIndex';
 import { FALLBACK_ORIGIN, sampleAfterglowsNear } from '../../src/data/sampleAfterglows';
 import { ACCESS_COPY } from '../../src/doctrine';
 import { getCurrentCoord } from '../../src/location/permissions';
@@ -42,8 +42,8 @@ export default function ResidueScreen() {
     };
   }, [id]);
 
-  const origin = here ?? FALLBACK_ORIGIN;
-  const inRange = item ? isWithinAccessRadius(origin, item.coord) : false;
+  const origin = gateOrigin(here, FALLBACK_ORIGIN);
+  const inRange = item ? canHearResidue(origin, item.coord, shownAt()) : false;
 
   if (!item) {
     return (
