@@ -17,10 +17,11 @@ Afterglow is **free forever**. No Stripe. No IAP. No paid unlocks.
 | Privacy policy URL | **https://28to3.me/apps/afterglow.html#privacy** |
 | Fallback policy | [docs/PRIVACY.md](PRIVACY.md), [docs/privacy.html](privacy.html), or https://28to3.me/privacy |
 | Landing change | Companion PR on Sofa-Loaf/28to3 adds the `#privacy` section — merge it so the Play URL resolves after Pages rebuilds |
-| Feature graphic | `assets/store/feature-graphic-1024x500.png` (1024×500) |
-| Hi-res icon | `assets/icon.png` (1024×1024; Play also accepts 512×512) |
-| Brand sources | `assets/brand/` |
-| Do not wait on | afterglow.com, Apple Developer, Stripe |
+| Feature graphic | `assets/brand/afterglow-play-feature.png` (source) → `assets/store/feature-graphic-1024x500.png` (1024×500 upload) |
+| Hi-res icon | `assets/brand/afterglow-app-icon.png` (glowing A; also Expo `icon` + adaptive foreground) |
+| Wordmark / splash | `assets/brand/afterglow-wordmark.png` (glow is in the art; splash is this file on `#000000`) |
+| Brand sources (locked) | `assets/brand/afterglow-wordmark.png`, `afterglow-app-icon.png`, `afterglow-play-feature.png` |
+| Do not wait on | afterglow.com, Apple Developer, Stripe, more brand art |
 
 Create the Play app with package **`me.to28.afterglow`**. It must match `app.json`. Do not create `com.sofaloaf.afterglow`.
 
@@ -94,12 +95,12 @@ Whispers left where you stood.
 
 ## Graphics checklist
 
-Use the files already in this repo. Do not invent a second logo.
+Use the **locked brand files**. Do not invent a second logo.
 
 | Asset | Required? | Spec | File |
 | --- | --- | --- | --- |
-| App icon | Yes | 512×512 PNG, 32-bit, no alpha required | Export from `assets/icon.png` (already 1024 — Play accepts 512+) |
-| Feature graphic | Yes | **1024×500** PNG | `assets/store/feature-graphic-1024x500.png` |
+| App icon | Yes | 512×512 PNG, 32-bit | `assets/brand/afterglow-app-icon.png` (1024 — Play accepts 512+) |
+| Feature graphic | Yes | **1024×500** PNG | Upload `assets/store/feature-graphic-1024x500.png` (cropped from `assets/brand/afterglow-play-feature.png`) |
 | Phone screenshots | Yes, **at least 2** | JPEG/PNG, 16:9 or 9:16, between 320px and 3840px on each side | Capture on a phone or emulator (see shot list) |
 | 7" tablet screenshots | Only if you declare 7" tablet support | Same rules; typically 1024×600 or 1200×1920 class | Capture on a 7" AVD if you keep tablet distribution |
 | 10" tablet | Optional | Same | Skip unless you want large-tablet listing art |

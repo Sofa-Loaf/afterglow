@@ -33,7 +33,7 @@ v0 includes:
 - Local / ephemeral storage stub (device only, TTL purge)
 - In-app privacy + [docs/PRIVACY.md](docs/PRIVACY.md)
 - Play submit pack: [docs/PLAY_STORE.md](docs/PLAY_STORE.md)
-- Brand: `assets/brand/` (wordmark, glowing A, Play feature graphic)
+- Locked brand: `assets/brand/afterglow-wordmark.png`, `afterglow-app-icon.png`, `afterglow-play-feature.png`
 
 This is a scaffold. It is **not** a store submission and does **not** claim Play or App Store approval.
 

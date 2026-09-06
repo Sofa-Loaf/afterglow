@@ -1,5 +1,6 @@
 import { Image, StyleSheet, View } from 'react-native';
 
+/** Locked brand wordmark. Amber glow is already in the PNG — do not re-glow it. */
 type Props = {
   size?: 'hero' | 'header';
 };
@@ -19,17 +20,17 @@ export function Wordmark({ size = 'hero' }: Props) {
 const styles = StyleSheet.create({
   wrap: {
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 4,
   },
   headerWrap: {
     marginBottom: 0,
   },
   hero: {
     width: '100%',
-    height: 92,
+    height: 110,
   },
   header: {
-    width: 168,
-    height: 36,
+    width: 188,
+    height: 40,
   },
 });

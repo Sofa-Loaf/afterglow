@@ -5,6 +5,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { residueInReach } from '../src/access';
 import { Screen } from '../src/components/Screen';
 import { TapeButton } from '../src/components/TapeButton';
+import { Wordmark } from '../src/components/Wordmark';
 import { rememberShown } from '../src/data/residueIndex';
 import { FALLBACK_ORIGIN, sampleAfterglowsNear } from '../src/data/sampleAfterglows';
 import { ACCESS_COPY, PROMPT } from '../src/doctrine';
@@ -55,6 +56,7 @@ export default function FieldScreen() {
 
   return (
     <Screen>
+      <Wordmark size="hero" />
       <Text style={styles.kicker}>whispers nearby</Text>
       <Text style={styles.tagline}>Whispers left where you stood.</Text>
       <Text style={styles.lede}>
