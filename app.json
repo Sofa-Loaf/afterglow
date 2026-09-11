@@ -26,7 +26,7 @@
       "package": "me.to28.afterglow",
       "adaptiveIcon": {
         "foregroundImage": "./assets/brand/afterglow-app-icon.png",
-        "backgroundColor": "#000000"
+        "backgroundColor": "#0a0a0b"
       },
       "softwareKeyboardLayoutMode": "resize",
       "edgeToEdgeEnabled": true,
@@ -86,7 +86,7 @@
     },
     "androidNavigationBar": {
       "barStyle": "light-content",
-      "backgroundColor": "#000000"
+      "backgroundColor": "#0a0a0b"
     },
     "web": {
       "favicon": "./assets/favicon.png",

@@ -2,7 +2,7 @@ import { Platform, TextStyle, ViewStyle } from 'react-native';
 
 /** Dark field-recorder palette. Soft amber glow — never neon. */
 export const color = {
-  bg: '#000000',
+  bg: '#0a0a0b',
   black: '#000000',
   panel: '#12110f',
   ink: '#f4ead8',
