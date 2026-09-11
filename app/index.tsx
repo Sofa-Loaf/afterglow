@@ -16,7 +16,7 @@ import {
   requestForegroundPermission,
 } from '../src/location/permissions';
 import { listLocalAfterglows } from '../src/storage/ephemeralStore';
-import { color, font, glow } from '../src/theme';
+import { color, font, panel, space, type } from '../src/theme';
 import { ageLabel } from '../src/ttl';
 import type { Afterglow, Coord, PermissionState } from '../src/types';
 
@@ -59,16 +59,13 @@ export default function FieldScreen() {
       <Wordmark size="hero" />
       <Text style={styles.kicker}>whispers nearby</Text>
       <Text style={styles.tagline}>Whispers left where you stood.</Text>
-      <Text style={styles.lede}>
-        Not a review of the place. You hear a whisper only at the same pin — {ACCESS_COPY.radius}.
-        Then you move on.
-      </Text>
+      <Text style={styles.lede}>Hear one only at the same pin — {ACCESS_COPY.radius}. Then move on.</Text>
 
       {permission !== 'granted' ? (
         <View style={styles.panel}>
           <Text style={styles.panelText}>
-            GPS is the trigger. Location stays on-device. Afterglow notices when you leave, and only
-            shows residue within {ACCESS_COPY.radius} of the pin. No live “who’s here.”
+            GPS is the trigger. Location stays on-device. Residue within {ACCESS_COPY.radius} of the
+            pin. No live “who’s here.”
           </Text>
           <TapeButton
             label="Allow location"
@@ -80,123 +77,144 @@ export default function FieldScreen() {
         </View>
       ) : (
         <Text style={styles.meta}>
-          {here ? 'At this pin' : 'Using sample coordinates'} · {ACCESS_COPY.radiusShort} ·
-          foreground only
+          {here ? 'At this pin' : 'Using sample coordinates'} · {ACCESS_COPY.radiusShort}
         </Text>
       )}
 
       {items.length === 0 ? (
-        <Text style={styles.empty}>{ACCESS_COPY.emptyNearby}</Text>
-      ) : null}
+        <View style={styles.emptyBox}>
+          <Text style={styles.empty}>{ACCESS_COPY.emptyNearby}</Text>
+        </View>
+      ) : (
+        <View style={styles.list}>
+          {items.map((item) => {
+            const distance = formatDistance(distanceMeters(origin, item.coord));
+            return (
+              <Pressable
+                key={item.id}
+                accessibilityRole="button"
+                onPress={() => router.push(`/residue/${item.id}`)}
+                style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
+              >
+                <Text style={styles.rowKind}>{kindLabel(item.kind)}</Text>
+                <Text style={styles.rowBody}>
+                  {item.kind === 'line' && item.line ? item.line : `at ${item.placeHint}`}
+                </Text>
+                <Text style={styles.rowMeta}>
+                  {ageLabel(item.createdAt)} · {distance}
+                  {item.origin === 'sample' ? ' · sample' : ''}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
+      )}
 
-      {items.map((item) => {
-        const distance = formatDistance(distanceMeters(origin, item.coord));
-        return (
-          <Pressable
-            key={item.id}
-            accessibilityRole="button"
-            onPress={() => router.push(`/residue/${item.id}`)}
-            style={styles.row}
-          >
-            <Text style={styles.rowKind}>{kindLabel(item.kind)}</Text>
-            <Text style={styles.rowBody}>
-              {item.kind === 'line' && item.line ? item.line : `at ${item.placeHint}`}
-            </Text>
-            <Text style={styles.rowMeta}>
-              {ageLabel(item.createdAt)} · {distance}
-              {item.origin === 'sample' ? ' · sample' : ''}
-            </Text>
-          </Pressable>
-        );
-      })}
-
-      <View style={styles.spacer} />
-      <TapeButton label={PROMPT.leave} onPress={() => router.push('/leave')} />
-      <TapeButton label="Leave one now" kind="quiet" onPress={() => router.push('/capture')} />
-      <TapeButton label="Privacy" kind="quiet" onPress={() => router.push('/privacy')} />
+      <View style={styles.actions}>
+        <TapeButton label={PROMPT.leave} onPress={() => router.push('/leave')} />
+        <TapeButton label="Leave one now" kind="ghost" onPress={() => router.push('/capture')} />
+        <Pressable
+          accessibilityRole="link"
+          onPress={() => router.push('/privacy')}
+          hitSlop={8}
+          style={styles.privacyHit}
+        >
+          <Text style={styles.privacy}>Privacy</Text>
+        </Pressable>
+      </View>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   kicker: {
-    color: color.amberSoft,
-    fontFamily: font.mono,
-    fontSize: 12,
-    letterSpacing: 1.8,
-    textTransform: 'uppercase',
-    marginBottom: 8,
-    ...glow.text,
+    ...type.kicker,
+    textAlign: 'center',
+    marginTop: 4,
+    marginBottom: space.sm,
   },
   tagline: {
-    color: color.ink,
-    fontFamily: font.serif,
-    fontSize: 26,
-    lineHeight: 34,
-    marginBottom: 10,
-    ...glow.text,
+    ...type.title,
+    fontSize: 24,
+    lineHeight: 32,
+    textAlign: 'center',
+    marginBottom: space.sm,
   },
   lede: {
-    color: color.dust,
-    fontFamily: font.serif,
-    fontSize: 17,
-    lineHeight: 26,
-    marginBottom: 18,
+    ...type.body,
+    textAlign: 'center',
+    marginBottom: space.lg,
   },
   meta: {
-    color: color.dust,
-    fontFamily: font.mono,
-    fontSize: 12,
-    marginBottom: 16,
+    ...type.meta,
+    textAlign: 'center',
+    marginBottom: space.lg,
   },
   panel: {
-    borderWidth: 1,
-    borderColor: color.line,
-    backgroundColor: color.panel,
-    padding: 16,
-    marginBottom: 18,
+    ...panel,
+    marginBottom: space.lg,
   },
   panelText: {
-    color: color.dust,
-    fontFamily: font.serif,
+    ...type.body,
     fontSize: 15,
-    lineHeight: 22,
-    marginBottom: 12,
+    lineHeight: 23,
+    marginBottom: space.sm,
+  },
+  list: {
+    marginBottom: 8,
   },
   row: {
-    borderBottomWidth: 1,
+    paddingVertical: 18,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: color.line,
-    paddingVertical: 14,
+  },
+  rowPressed: {
+    opacity: 0.72,
   },
   rowKind: {
     color: color.amberSoft,
     fontFamily: font.mono,
     fontSize: 11,
-    letterSpacing: 1,
+    letterSpacing: 1.4,
     textTransform: 'uppercase',
-    marginBottom: 4,
+    marginBottom: 6,
   },
   rowBody: {
     color: color.ink,
     fontFamily: font.serif,
     fontSize: 18,
-    lineHeight: 24,
+    lineHeight: 26,
   },
   rowMeta: {
-    color: color.dust,
-    fontFamily: font.mono,
-    fontSize: 12,
-    marginTop: 6,
+    ...type.meta,
+    marginTop: 8,
+  },
+  emptyBox: {
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: color.line,
+    paddingVertical: 28,
+    marginBottom: space.lg,
   },
   empty: {
-    color: color.dust,
-    fontFamily: font.serif,
-    fontSize: 16,
-    lineHeight: 24,
-    marginBottom: 18,
+    ...type.body,
+    textAlign: 'center',
     fontStyle: 'italic',
   },
-  spacer: {
-    height: 28,
+  actions: {
+    marginTop: 'auto',
+    paddingTop: space.xl,
+  },
+  privacyHit: {
+    minHeight: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 4,
+  },
+  privacy: {
+    ...type.meta,
+    letterSpacing: 1.4,
+    textTransform: 'uppercase',
+    color: color.dust,
   },
 });

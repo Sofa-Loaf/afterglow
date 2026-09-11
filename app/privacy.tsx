@@ -3,7 +3,7 @@ import { Linking, StyleSheet, Text } from 'react-native';
 import { Screen } from '../src/components/Screen';
 import { DOCTRINE_LINES, PRODUCT } from '../src/doctrine';
 import { storageNote } from '../src/storage/ephemeralStore';
-import { color, font, glow } from '../src/theme';
+import { space, type } from '../src/theme';
 
 const POLICY_URL = 'https://28to3.me/apps/afterglow.html#privacy';
 
@@ -47,40 +47,29 @@ export default function PrivacyScreen() {
 
 const styles = StyleSheet.create({
   kicker: {
-    color: color.amberSoft,
-    fontFamily: font.mono,
-    fontSize: 12,
-    letterSpacing: 1.8,
-    textTransform: 'uppercase',
-    marginBottom: 10,
-    ...glow.text,
+    ...type.kicker,
+    marginBottom: space.sm,
   },
   title: {
-    color: color.ink,
-    fontFamily: font.serif,
-    fontSize: 28,
-    marginBottom: 18,
-    ...glow.text,
+    ...type.title,
+    marginBottom: space.lg,
   },
   heading: {
-    color: color.ink,
-    fontFamily: font.serif,
+    ...type.title,
     fontSize: 20,
-    marginTop: 8,
-    marginBottom: 12,
+    lineHeight: 26,
+    marginTop: space.sm,
+    marginBottom: space.sm,
   },
   line: {
-    color: color.dust,
-    fontFamily: font.serif,
-    fontSize: 16,
-    lineHeight: 24,
-    marginBottom: 12,
+    ...type.body,
+    marginBottom: space.sm,
   },
   link: {
-    color: color.amberSoft,
-    fontFamily: font.serif,
+    color: type.kicker.color,
+    fontFamily: type.body.fontFamily,
     fontSize: 16,
-    marginTop: 8,
+    marginTop: space.sm,
     textDecorationLine: 'underline',
   },
 });

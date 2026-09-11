@@ -1,30 +1,42 @@
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { color, font, glow } from '../theme';
 
 type Props = {
   label: string;
   onPress: () => void;
-  kind?: 'primary' | 'quiet';
+  /** Primary = amber tape action. Ghost = quiet secondary. */
+  kind?: 'primary' | 'ghost' | 'quiet';
   disabled?: boolean;
 };
 
 export function TapeButton({ label, onPress, kind = 'primary', disabled }: Props) {
-  const primary = kind !== 'quiet';
+  const primary = kind === 'primary';
   return (
     <Pressable
       accessibilityRole="button"
+      accessibilityState={{ disabled: Boolean(disabled) }}
       onPress={onPress}
       disabled={disabled}
+      hitSlop={4}
       style={({ pressed }) => [
         styles.base,
-        primary ? styles.primary : styles.quiet,
+        primary ? styles.primary : styles.ghost,
         primary && glow.panel,
         pressed && styles.pressed,
         disabled && styles.disabled,
       ]}
     >
-      <Text style={[styles.label, !primary && styles.quietLabel, primary && glow.text]}>{label}</Text>
+      <View style={styles.row}>
+        {primary ? <View style={styles.reel} /> : <View style={styles.reelSpacer} />}
+        <Text
+          style={[styles.label, !primary && styles.ghostLabel, primary && glow.text]}
+          numberOfLines={2}
+        >
+          {label}
+        </Text>
+        {primary ? <View style={styles.reel} /> : <View style={styles.reelSpacer} />}
+      </View>
     </Pressable>
   );
 }
@@ -32,31 +44,57 @@ export function TapeButton({ label, onPress, kind = 'primary', disabled }: Props
 const styles = StyleSheet.create({
   base: {
     borderWidth: 1,
+    minHeight: 52,
     paddingVertical: 14,
-    paddingHorizontal: 18,
-    marginBottom: 10,
+    paddingHorizontal: 14,
+    marginBottom: 12,
+    justifyContent: 'center',
+    width: '100%',
+    maxWidth: 480,
+    alignSelf: 'center',
   },
   primary: {
-    backgroundColor: color.panel,
+    backgroundColor: color.amberMuted,
     borderColor: color.amber,
   },
-  quiet: {
+  ghost: {
     backgroundColor: 'transparent',
     borderColor: color.line,
   },
   pressed: {
-    opacity: 0.7,
+    opacity: 0.82,
   },
   disabled: {
-    opacity: 0.4,
+    opacity: 0.38,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+  },
+  reel: {
+    width: 9,
+    height: 9,
+    borderRadius: 5,
+    borderWidth: 1.5,
+    borderColor: color.amber,
+    backgroundColor: 'transparent',
+  },
+  reelSpacer: {
+    width: 9,
+    height: 9,
   },
   label: {
+    flexShrink: 1,
     color: color.ink,
     fontFamily: font.serif,
     fontSize: 17,
+    lineHeight: 22,
     textAlign: 'center',
+    letterSpacing: 0.3,
   },
-  quietLabel: {
+  ghostLabel: {
     color: color.dust,
   },
 });

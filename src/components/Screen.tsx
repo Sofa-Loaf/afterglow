@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { color } from '../theme';
+import { color, space } from '../theme';
 
 type Props = {
   children: ReactNode;
@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flexGrow: 1,
-    paddingHorizontal: 22,
-    paddingTop: 12,
-    paddingBottom: 36,
+    paddingHorizontal: space.screenX,
+    paddingTop: 8,
+    paddingBottom: 40,
   },
 });

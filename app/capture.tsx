@@ -17,7 +17,7 @@ import { FALLBACK_ORIGIN } from '../src/data/sampleAfterglows';
 import { CAPTURE, PROMPT } from '../src/doctrine';
 import { getCurrentCoord } from '../src/location/permissions';
 import { saveAfterglow } from '../src/storage/ephemeralStore';
-import { color, font, glow } from '../src/theme';
+import { color, font, panel, space, type } from '../src/theme';
 import { expiresAt } from '../src/ttl';
 import type { CaptureKind } from '../src/types';
 
@@ -140,22 +140,25 @@ export default function CaptureScreen() {
       <Text style={styles.body}>{status}</Text>
 
       {kind === null ? (
-        <>
+        <View style={styles.chooser}>
           <TapeButton
-            label={`Voice · ${CAPTURE.voiceMinSeconds}–${CAPTURE.voiceMaxSeconds}s`}
+            label={`Record · ${CAPTURE.voiceMinSeconds}–${CAPTURE.voiceMaxSeconds}s`}
             onPress={() => void startVoice()}
             disabled={busy}
           />
-          <TapeButton label="A still · no face required" onPress={() => void takeStill()} disabled={busy} />
-          <TapeButton label="One line" onPress={() => setKind('line')} disabled={busy} />
-        </>
+          <TapeButton label="A still · no face required" kind="ghost" onPress={() => void takeStill()} disabled={busy} />
+          <TapeButton label="One line" kind="ghost" onPress={() => setKind('line')} disabled={busy} />
+        </View>
       ) : null}
 
       {kind === 'voice' ? (
         <View style={styles.panel}>
-          <Text style={styles.meter}>
-            {recording ? `${elapsed}s` : 'ready'} / {CAPTURE.voiceMaxSeconds}s
-          </Text>
+          <View style={styles.meterRow}>
+            <View style={[styles.recPip, recording && styles.recPipLive]} />
+            <Text style={styles.meter}>
+              {recording ? `${elapsed}s` : 'ready'} / {CAPTURE.voiceMaxSeconds}s
+            </Text>
+          </View>
           {recording ? (
             <TapeButton
               label={PROMPT.leaveIt}
@@ -163,7 +166,7 @@ export default function CaptureScreen() {
               disabled={busy || elapsed < CAPTURE.voiceMinSeconds}
             />
           ) : (
-            <TapeButton label="Start voice" onPress={() => void startVoice()} disabled={busy} />
+            <TapeButton label="Record" onPress={() => void startVoice()} disabled={busy} />
           )}
         </View>
       ) : null}
@@ -186,66 +189,76 @@ export default function CaptureScreen() {
         </View>
       ) : null}
 
-      <TapeButton
-        label={PROMPT.moveOn}
-        kind="quiet"
-        onPress={() => router.back()}
-        disabled={busy}
-      />
+      <View style={styles.footer}>
+        <TapeButton
+          label={PROMPT.moveOn}
+          kind="ghost"
+          onPress={() => router.back()}
+          disabled={busy}
+        />
+      </View>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   kicker: {
-    color: color.amberSoft,
-    fontFamily: font.mono,
-    fontSize: 12,
-    letterSpacing: 1.8,
-    textTransform: 'uppercase',
-    marginBottom: 10,
-    ...glow.text,
+    ...type.kicker,
+    marginBottom: space.sm,
   },
   title: {
-    color: color.ink,
-    fontFamily: font.serif,
-    fontSize: 28,
-    marginBottom: 12,
-    ...glow.text,
+    ...type.title,
+    marginBottom: space.sm,
   },
   body: {
-    color: color.dust,
-    fontFamily: font.serif,
-    fontSize: 16,
-    lineHeight: 24,
-    marginBottom: 22,
+    ...type.body,
+    marginBottom: space.lg,
+  },
+  chooser: {
+    marginBottom: 8,
   },
   panel: {
+    ...panel,
+    marginBottom: space.md,
+  },
+  meterRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: space.md,
+  },
+  recPip: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
     borderWidth: 1,
-    borderColor: color.line,
-    backgroundColor: color.panel,
-    padding: 16,
-    marginBottom: 16,
+    borderColor: color.tape,
+    marginRight: 10,
+  },
+  recPipLive: {
+    backgroundColor: color.amber,
+    borderColor: color.amber,
   },
   meter: {
     color: color.amberSoft,
     fontFamily: font.mono,
-    fontSize: 16,
-    marginBottom: 12,
+    fontSize: 15,
+    letterSpacing: 0.6,
   },
   input: {
     color: color.ink,
     fontFamily: font.serif,
     fontSize: 20,
+    lineHeight: 28,
     borderBottomWidth: 1,
     borderBottomColor: color.tape,
-    paddingVertical: 8,
-    marginBottom: 8,
+    paddingVertical: 12,
+    marginBottom: space.xs,
   },
   meta: {
-    color: color.dust,
-    fontFamily: font.mono,
-    fontSize: 12,
-    marginBottom: 12,
+    ...type.meta,
+    marginBottom: space.md,
+  },
+  footer: {
+    paddingTop: space.xl,
   },
 });
