@@ -1,13 +1,13 @@
 import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { Screen } from '../src/components/Screen';
 import { TapeButton } from '../src/components/TapeButton';
 import { FALLBACK_ORIGIN } from '../src/data/sampleAfterglows';
 import { ACCESS_COPY, PROMPT } from '../src/doctrine';
 import { reduceLeaveState, resetLeaveState } from '../src/location/leaveDetection';
-import { color, font, glow } from '../src/theme';
+import { space, type } from '../src/theme';
 
 export default function LeaveScreen() {
   const router = useRouter();
@@ -26,53 +26,43 @@ export default function LeaveScreen() {
       <Text style={styles.kicker}>after you leave</Text>
       <Text style={styles.prompt}>{PROMPT.leave}</Text>
       <Text style={styles.body}>
-        GPS noticed you left. A voice of 8–12 seconds. A still — no face required. Or one line. A
-        whisper from who stood right there. Not a review. Then you move on.
+        A voice of 8–12 seconds. A still — no face required. Or one line. Then you move on.
       </Text>
       <Text style={styles.meta}>
-        Leave detection uses GPS in the foreground. The pin is precise; {ACCESS_COPY.radius} is the
-        gate. Background geofencing is off so Play does not need background location. Phase:{' '}
+        GPS in the foreground. The pin is precise; {ACCESS_COPY.radius} is the gate. Phase:{' '}
         {state.phase}.
       </Text>
-      {!simulated ? (
-        <TapeButton label="Simulate leaving" kind="quiet" onPress={() => setSimulated(true)} />
-      ) : null}
-      <TapeButton label={PROMPT.leaveIt} onPress={() => router.push('/capture')} />
-      <TapeButton label={PROMPT.moveOn} kind="quiet" onPress={() => router.replace('/')} />
+      <View style={styles.actions}>
+        {!simulated ? (
+          <TapeButton label="Simulate leaving" kind="ghost" onPress={() => setSimulated(true)} />
+        ) : null}
+        <TapeButton label={PROMPT.leaveIt} onPress={() => router.push('/capture')} />
+        <TapeButton label={PROMPT.moveOn} kind="ghost" onPress={() => router.replace('/')} />
+      </View>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   kicker: {
-    color: color.amberSoft,
-    fontFamily: font.mono,
-    fontSize: 12,
-    letterSpacing: 1.8,
-    textTransform: 'uppercase',
-    marginBottom: 14,
-    ...glow.text,
+    ...type.kicker,
+    marginBottom: space.md,
   },
   prompt: {
-    color: color.ink,
-    fontFamily: font.serif,
-    fontSize: 32,
-    lineHeight: 40,
-    marginBottom: 16,
-    ...glow.text,
+    ...type.display,
+    marginBottom: space.md,
   },
   body: {
-    color: color.dust,
-    fontFamily: font.serif,
+    ...type.body,
     fontSize: 17,
     lineHeight: 26,
-    marginBottom: 18,
+    marginBottom: space.md,
   },
   meta: {
-    color: color.dust,
-    fontFamily: font.mono,
-    fontSize: 12,
-    lineHeight: 18,
-    marginBottom: 28,
+    ...type.meta,
+    marginBottom: space.xl,
+  },
+  actions: {
+    marginTop: 'auto',
   },
 });

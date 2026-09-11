@@ -1,7 +1,7 @@
 import { useAudioPlayer } from 'expo-audio';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 import { canHearResidue } from '../../src/access';
 import { Screen } from '../../src/components/Screen';
@@ -11,7 +11,7 @@ import { FALLBACK_ORIGIN, sampleAfterglowsNear } from '../../src/data/sampleAfte
 import { ACCESS_COPY } from '../../src/doctrine';
 import { getCurrentCoord } from '../../src/location/permissions';
 import { getAfterglow } from '../../src/storage/ephemeralStore';
-import { color, font, glow } from '../../src/theme';
+import { color, panel, space, type } from '../../src/theme';
 import { ageLabel } from '../../src/ttl';
 import type { Afterglow, Coord } from '../../src/types';
 
@@ -48,8 +48,11 @@ export default function ResidueScreen() {
   if (!item) {
     return (
       <Screen>
-        <Text style={styles.body}>This whisper has already faded.</Text>
-        <TapeButton label="Back" kind="quiet" onPress={() => router.back()} />
+        <Text style={styles.kicker}>faded</Text>
+        <Text style={styles.title}>This whisper has already faded.</Text>
+        <View style={styles.footer}>
+          <TapeButton label="Back" kind="ghost" onPress={() => router.back()} />
+        </View>
       </Screen>
     );
   }
@@ -59,8 +62,12 @@ export default function ResidueScreen() {
       <Screen>
         <Text style={styles.kicker}>same spot</Text>
         <Text style={styles.title}>at {item.placeHint}</Text>
-        <Text style={styles.body}>{ACCESS_COPY.tooFar}</Text>
-        <TapeButton label="Move on" kind="quiet" onPress={() => router.back()} />
+        <View style={styles.emptyBox}>
+          <Text style={styles.body}>{ACCESS_COPY.tooFar}</Text>
+        </View>
+        <View style={styles.footer}>
+          <TapeButton label="Move on" kind="ghost" onPress={() => router.back()} />
+        </View>
       </Screen>
     );
   }
@@ -80,7 +87,9 @@ export default function ResidueScreen() {
       ) : null}
 
       {item.kind === 'still' && !item.mediaUri ? (
-        <Text style={styles.body}>A still was left here. Sample entries have no photo file.</Text>
+        <View style={styles.emptyBox}>
+          <Text style={styles.body}>A still was left here. Sample entries have no photo file.</Text>
+        </View>
       ) : null}
 
       {item.kind === 'voice' ? (
@@ -103,59 +112,57 @@ export default function ResidueScreen() {
       ) : null}
 
       <Text style={styles.note}>No comments. No likes. No stars. Leave it as you found it.</Text>
-      <TapeButton label="Move on" kind="quiet" onPress={() => router.back()} />
+      <View style={styles.footer}>
+        <TapeButton label="Move on" kind="ghost" onPress={() => router.back()} />
+      </View>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   kicker: {
-    color: color.amberSoft,
-    fontFamily: font.mono,
-    fontSize: 12,
-    letterSpacing: 1.8,
-    textTransform: 'uppercase',
-    marginBottom: 10,
-    ...glow.text,
+    ...type.kicker,
+    marginBottom: space.sm,
   },
   title: {
-    color: color.ink,
-    fontFamily: font.serif,
-    fontSize: 28,
-    marginBottom: 8,
-    ...glow.text,
+    ...type.title,
+    marginBottom: space.xs,
   },
   meta: {
-    color: color.dust,
-    fontFamily: font.mono,
-    fontSize: 12,
-    marginBottom: 20,
+    ...type.meta,
+    marginBottom: space.lg,
   },
   line: {
     color: color.ink,
-    fontFamily: font.serif,
+    fontFamily: type.title.fontFamily,
     fontSize: 24,
     lineHeight: 34,
-    marginBottom: 24,
+    marginBottom: space.lg,
   },
   body: {
-    color: color.dust,
-    fontFamily: font.serif,
-    fontSize: 16,
-    lineHeight: 24,
-    marginBottom: 16,
+    ...type.body,
+    marginBottom: space.md,
   },
   still: {
     width: '100%',
     height: 280,
     backgroundColor: color.panel,
-    marginBottom: 20,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: color.line,
+    marginBottom: space.lg,
+  },
+  emptyBox: {
+    ...panel,
+    marginBottom: space.md,
   },
   note: {
-    color: color.dust,
-    fontFamily: font.serif,
+    ...type.body,
     fontSize: 15,
-    marginTop: 8,
-    marginBottom: 20,
+    marginTop: space.sm,
+    marginBottom: space.md,
+  },
+  footer: {
+    marginTop: 'auto',
+    paddingTop: space.lg,
   },
 });

@@ -108,10 +108,10 @@ Use the **locked brand files**. Do not invent a second logo.
 
 **Phone shot list (capture these four, then pick the best two+):**
 
-1. Nearby whispers list — home, charcoal, cream type, amber kicker.
-2. Leave prompt — “Want to leave an afterglow?”
-3. Capture — voice / still / one line chooser.
-4. Residue detail or Privacy — “No comments. No likes. No stars.”
+1. Nearby whispers list — home (no stack header; in-screen glowing wordmark), charcoal near-black, cream type, amber kicker.
+2. Leave prompt — “Want to leave an afterglow?” (header untitled; back chevron only).
+3. Capture — voice / still / one line chooser. Header title **Leave it**. Primary tape control is **Record**.
+4. Residue detail or Privacy — “No comments. No likes. No stars.” Header title **Residue** or **Privacy**.
 
 **How to capture**
 

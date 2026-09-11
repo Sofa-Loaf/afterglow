@@ -34,6 +34,7 @@ export default function RootLayout() {
           options={{
             title: 'Afterglow',
             headerTitle: () => <Wordmark size="header" />,
+            headerShown: false,
           }}
         />
         <Stack.Screen name="leave" options={{ title: '' }} />
