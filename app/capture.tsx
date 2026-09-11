@@ -259,7 +259,6 @@ const styles = StyleSheet.create({
     marginBottom: space.md,
   },
   footer: {
-    marginTop: 'auto',
-    paddingTop: space.lg,
+    paddingTop: space.xl,
   },
 });

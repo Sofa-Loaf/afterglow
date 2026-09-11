@@ -63,6 +63,6 @@ const styles = StyleSheet.create({
     marginBottom: space.xl,
   },
   actions: {
-    marginTop: 'auto',
+    paddingTop: space.sm,
   },
 });

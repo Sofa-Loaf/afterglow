@@ -49,6 +49,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     marginBottom: 12,
     justifyContent: 'center',
+    width: '100%',
+    maxWidth: 480,
+    alignSelf: 'center',
   },
   primary: {
     backgroundColor: color.amberMuted,
