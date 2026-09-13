@@ -1,8 +1,43 @@
 # Google Play submit pack (Android first)
 
-This is a **one-session upload checklist**. Afterglow has not been submitted. John does **not** need Play Console until the AAB is ready. iOS / App Store work is later and does not block this MVP.
+This file is the **source of truth** for the Play listing (copy, Data safety, content rating, graphics pointers). Afterglow is **free forever**. No Stripe. No IAP. No paid unlocks. iOS / App Store work is later and does not block this MVP.
 
-Afterglow is **free forever**. No Stripe. No IAP. No paid unlocks.
+## Status (2026-09-13)
+
+Play Console is **verified** (John, 2026-09-13). The production AAB is **not** in this repo and cannot be built from CI until John finishes Expo/EAS on a machine he controls.
+
+| Item | State |
+| --- | --- |
+| Application id | `me.to28.afterglow` — locked in `app.json`. Do not change. |
+| Play Console | Verified. Internal-testing upload can proceed once the AAB exists. |
+| Privacy policy URL | https://28to3.me/apps/afterglow.html#privacy |
+| EAS project id | **Not in git.** Do **not** invent one. `eas init` writes it after Expo login. |
+| Production AAB | Blocked on John — commands below. |
+| Feature graphic + app icon | In repo (see Graphics). |
+| Phone screenshots | **Still blocked on John.** Capture on a phone or emulator. Do not invent Play Console screenshots. |
+
+### Exact commands after Expo login
+
+John runs these from the repo root (Node 20+), **after** `npx eas-cli@latest login` succeeds. Package stays `me.to28.afterglow`.
+
+```bash
+# Writes extra.eas.projectId into app.json — commit that id, do not invent it
+npx eas-cli@latest init
+
+# Production AAB for Play internal testing (profile sets buildType: app-bundle)
+npx eas-cli@latest build -p android --profile production
+```
+
+If `eas` is on PATH, the same two steps are:
+
+```bash
+eas init
+eas build -p android --profile production
+```
+
+First Android build: let EAS **generate a new keystore** when asked (unless John already has a Play upload key). Wait for the Expo build page. Download the `.aab`. Play Console → **Testing → Internal testing** → **Create release** → upload that file.
+
+To let CI kick a later build: Expo dashboard → Access tokens → `EXPO_TOKEN` in the environment (never commit the token), then the same `build -p android --profile production` command.
 
 ## Package identity (locked)
 
@@ -16,7 +51,7 @@ Afterglow is **free forever**. No Stripe. No IAP. No paid unlocks.
 | Version | `0.1.0` (`app.json` / `package.json`) — bump before a second upload |
 | Privacy policy URL | **https://28to3.me/apps/afterglow.html#privacy** |
 | Fallback policy | [docs/PRIVACY.md](PRIVACY.md), [docs/privacy.html](privacy.html), or https://28to3.me/privacy |
-| Landing change | Companion PR on Sofa-Loaf/28to3 adds the `#privacy` section — merge it so the Play URL resolves after Pages rebuilds |
+| Landing change | `#privacy` is live on 28to3.me (companion Sofa-Loaf/28to3). Paste the URL above into Play. |
 | Feature graphic | `assets/brand/afterglow-play-feature.png` (source) → `assets/store/feature-graphic-1024x500.png` (1024×500 upload) |
 | Hi-res icon | `assets/brand/afterglow-app-icon.png` (glowing A; also Expo `icon` + adaptive foreground) |
 | Wordmark / splash | `assets/brand/afterglow-wordmark.png` (glow is in the art; splash is this file on `#000000`) |
@@ -25,29 +60,18 @@ Afterglow is **free forever**. No Stripe. No IAP. No paid unlocks.
 
 Create the Play app with package **`me.to28.afterglow`**. It must match `app.json`. Do not create `com.sofaloaf.afterglow`.
 
-## What John does in one Console session
+## What John does next (Console is already verified)
 
-Do the account work first, then upload. Nothing below requires waiting on iOS.
+Account enrollment is done. Remaining work is Expo/EAS, real screenshots, then paste-and-upload in Console. Nothing below requires waiting on iOS.
 
-1. Google account John controls.
-2. Enroll in **Google Play Console** — **$25 one-time** (personal developer account is enough).
-3. **Create app**: name `Afterglow`, default language English (US), **app**, **free**.
-4. Set the package name / Play App ID to **`me.to28.afterglow`** when the Console asks (must match the AAB).
-5. Paste **privacy policy**: https://28to3.me/apps/afterglow.html#privacy
-6. Fill **Store listing** (copy below), **Graphics** (icon + feature graphic + screenshots), **Categorization**, **Contact details**.
-7. Complete **Content rating** (notes below).
-8. Complete **Data safety** (draft below).
-9. Declare **permissions** using the rationale below if Play asks.
-10. Upload the production **AAB** to the **internal testing** track first (draft). Promote later.
-
-A free **Expo** account is needed **before** that session if the AAB is not already downloaded:
-
-```bash
-npx eas-cli@latest login
-npx eas-cli@latest init
-```
-
-`eas init` writes an EAS project id into `app.json`. Do not invent one in git before that command.
+1. Free **Expo** account on a machine John controls: `npx eas-cli@latest login`.
+2. Then the two commands in **Exact commands after Expo login** (`eas init`, then `eas build -p android --profile production`). Commit the project id `eas init` writes. Do not invent one.
+3. Confirm the Play app package is **`me.to28.afterglow`** (must match `app.json` and the AAB). Do not create `com.sofaloaf.afterglow`.
+4. Paste **privacy policy**: https://28to3.me/apps/afterglow.html#privacy
+5. Fill **Store listing** from **this file**, **Graphics** (repo icon + feature graphic + **device-captured** screenshots), **Categorization**, **Contact details**.
+6. Complete **Content rating** and **Data safety** (drafts below).
+7. Declare **permissions** using the rationale below if Play asks.
+8. Upload the production **AAB** to the **internal testing** track first (draft). Promote later.
 
 Not needed for this Play path: Apple Developer Program, Stripe, ads SDK, Maps API key, background-location declaration.
 
@@ -101,7 +125,7 @@ Use the **locked brand files**. Do not invent a second logo.
 | --- | --- | --- | --- |
 | App icon | Yes | 512×512 PNG, 32-bit | `assets/brand/afterglow-app-icon.png` (1024 — Play accepts 512+) |
 | Feature graphic | Yes | **1024×500** PNG | Upload `assets/store/feature-graphic-1024x500.png` (cropped from `assets/brand/afterglow-play-feature.png`) |
-| Phone screenshots | Yes, **at least 2** | JPEG/PNG, 16:9 or 9:16, between 320px and 3840px on each side | Capture on a phone or emulator (see shot list) |
+| Phone screenshots | Yes, **at least 2** | JPEG/PNG, 16:9 or 9:16, between 320px and 3840px on each side | **Not in repo.** Capture on a phone or emulator (shot list). Do not fake Console screenshots. |
 | 7" tablet screenshots | Only if you declare 7" tablet support | Same rules; typically 1024×600 or 1200×1920 class | Capture on a 7" AVD if you keep tablet distribution |
 | 10" tablet | Optional | Same | Skip unless you want large-tablet listing art |
 | Promo video | No | YouTube URL | Skip for v0 |
@@ -119,7 +143,7 @@ Use the **locked brand files**. Do not invent a second logo.
 npx expo start --android
 ```
 
-Use a Pixel-class emulator or a phone. Crop to portrait 1080×1920 or 1080×2340. No status-bar secrets. Do not screenshot the Expo QR / Metro screen.
+Use a Pixel-class emulator or a phone. Crop to portrait 1080×1920 or 1080×2340. No status-bar secrets. Do not screenshot the Expo QR / Metro screen. Do **not** invent or composite Play Console listing screenshots — they must be the running app.
 
 **7" tablet:** Afterglow is portrait and usable on tablets. If Play’s default device catalog includes 7" tablets (it usually does), add **two** 7" shots of the same screens so the listing is not rejected for missing tablet graphics. If you later restrict the catalog to phones only, tablet shots are not required.
 
@@ -194,26 +218,27 @@ System strings (already in `app.json`):
 
 ## Production AAB — exact EAS steps
 
-Package `me.to28.afterglow` is read from `app.json`. The production profile in `eas.json` builds an **Android App Bundle** (`buildType: app-bundle`).
+Package `me.to28.afterglow` is read from `app.json`. The production profile in `eas.json` builds an **Android App Bundle** (`buildType: app-bundle`). Do not invent `extra.eas.projectId` in git.
 
 From the repo root, with Node 20+:
 
 ```bash
-# 1. Once per machine
+# 1. Once per machine (Expo account John controls)
 npx eas-cli@latest login
+
+# 2. After login — these two are the remaining AAB blockers
 npx eas-cli@latest init
-
-# 2. Production AAB (this is the Play upload file)
-eas build -p android --profile production
-```
-
-Equivalent if `eas` is not on PATH:
-
-```bash
 npx eas-cli@latest build -p android --profile production
 ```
 
-Wait for the Expo build page to finish. Download the `.aab`. In Play Console → **Testing → Internal testing** (or Production later) → **Create release** → upload that AAB.
+Equivalent if `eas` is on PATH after login:
+
+```bash
+eas init
+eas build -p android --profile production
+```
+
+`eas init` writes the EAS project id into `app.json`. Commit that change. Wait for the Expo build page to finish. Download the `.aab`. In Play Console → **Testing → Internal testing** (or Production later) → **Create release** → upload that AAB.
 
 **Preview APK** (sideload / friends, not Play):
 
