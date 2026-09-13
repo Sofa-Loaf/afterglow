@@ -2,6 +2,7 @@
   "expo": {
     "name": "Afterglow",
     "slug": "afterglow",
+    "owner": "www.28to3.me",
     "scheme": "afterglow",
     "version": "0.1.0",
     "orientation": "portrait",
@@ -95,7 +96,10 @@
     "extra": {
       "freeForever": true,
       "payments": "none",
-      "androidPackage": "me.to28.afterglow"
+      "androidPackage": "me.to28.afterglow",
+      "eas": {
+        "projectId": "cb3c3a77-19bd-4e3a-ae5e-69f4101dbcec"
+      }
     }
   }
 }
