@@ -56,17 +56,17 @@ npx expo start --web   # optional UI check; native capture is the real path
 
 ## Android build path
 
-Package name: `me.to28.afterglow`.
+Package name: `me.to28.afterglow`. Listing copy, Data safety, and graphics pointers live in [docs/PLAY_STORE.md](docs/PLAY_STORE.md) (source of truth). Do **not** invent an EAS project id in git.
 
 ```bash
-# APK for testers (EAS; John logs into Expo first)
 npx eas-cli@latest login
-npx eas-cli@latest init
-npx eas-cli@latest build --platform android --profile preview
 
-# AAB for Play production track (exact command)
-eas build -p android --profile production
+# After Expo login (exact remaining AAB steps)
+npx eas-cli@latest init
+npx eas-cli@latest build -p android --profile production
 ```
+
+Preview APK (sideload / friends, not Play): `npx eas-cli@latest build --platform android --profile preview`.
 
 Local (Android SDK on the machine):
 
@@ -80,12 +80,11 @@ Then assemble with Android Studio / Gradle. Generated `android/` is gitignored.
 
 **To test now:** Node, this repo, Expo Go on Android (or an emulator).
 
-**To put a build on Play:**
+**To put a build on Play (Console verified 2026-09-13):**
 
-1. Google Play Console — **$25 one-time**
-2. Free Expo account (EAS)
-3. Privacy policy URL **now**: https://28to3.me/apps/afterglow.html#privacy (fallback [docs/PRIVACY.md](docs/PRIVACY.md)). Do not wait on afterglow.com.
-4. Screenshots + feature graphic + Data safety + content rating (see [docs/PLAY_STORE.md](docs/PLAY_STORE.md))
+1. Free Expo account: `npx eas-cli@latest login`, then `eas init`, then `eas build -p android --profile production` (full notes in [docs/PLAY_STORE.md](docs/PLAY_STORE.md)).
+2. Privacy policy URL: https://28to3.me/apps/afterglow.html#privacy (fallback [docs/PRIVACY.md](docs/PRIVACY.md)).
+3. Phone screenshots captured on a device or emulator — do not invent Play Console screenshots. Feature graphic + icon are already in `assets/`. Listing paste from [docs/PLAY_STORE.md](docs/PLAY_STORE.md).
 
 **Later, not a blocker:** Apple Developer Program (~$99/year) for iOS.
 
