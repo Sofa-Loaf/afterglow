@@ -60,11 +60,10 @@ Package name: `me.to28.afterglow`. Listing copy, Data safety, and graphics point
 
 ```bash
 npx eas-cli@latest login
-
-# After Expo login (exact remaining AAB steps)
-npx eas-cli@latest init
 npx eas-cli@latest build -p android --profile production
 ```
+
+EAS `projectId` `cb3c3a77-19bd-4e3a-ae5e-69f4101dbcec` is already in `app.json` under owner `www.28to3.me`. Do not invent one or re-run `eas init`.
 
 Preview APK (sideload / friends, not Play): `npx eas-cli@latest build --platform android --profile preview`.
 
@@ -82,7 +81,7 @@ Then assemble with Android Studio / Gradle. Generated `android/` is gitignored.
 
 **To put a build on Play (Console verified 2026-09-13):**
 
-1. Free Expo account: `npx eas-cli@latest login`, then `eas init`, then `eas build -p android --profile production` (full notes in [docs/PLAY_STORE.md](docs/PLAY_STORE.md)).
+1. Free Expo account: `npx eas-cli@latest login`, then `eas build -p android --profile production` (full notes in [docs/PLAY_STORE.md](docs/PLAY_STORE.md)). Project id is already in `app.json`.
 2. Privacy policy URL: https://28to3.me/apps/afterglow.html#privacy (fallback [docs/PRIVACY.md](docs/PRIVACY.md)).
 3. Phone screenshots captured on a device or emulator — do not invent Play Console screenshots. Feature graphic + icon are already in `assets/`. Listing paste from [docs/PLAY_STORE.md](docs/PLAY_STORE.md).
 

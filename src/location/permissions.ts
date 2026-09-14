@@ -3,15 +3,23 @@ import * as Location from 'expo-location';
 import type { Coord, PermissionState } from '../types';
 
 export async function getForegroundPermission(): Promise<PermissionState> {
-  const current = await Location.getForegroundPermissionsAsync();
-  if (current.granted) return 'granted';
-  if (current.status === Location.PermissionStatus.DENIED) return 'denied';
-  return 'unknown';
+  try {
+    const current = await Location.getForegroundPermissionsAsync();
+    if (current.granted) return 'granted';
+    if (current.status === Location.PermissionStatus.DENIED) return 'denied';
+    return 'unknown';
+  } catch {
+    return 'unknown';
+  }
 }
 
 export async function requestForegroundPermission(): Promise<PermissionState> {
-  const result = await Location.requestForegroundPermissionsAsync();
-  return result.granted ? 'granted' : 'denied';
+  try {
+    const result = await Location.requestForegroundPermissionsAsync();
+    return result.granted ? 'granted' : 'denied';
+  } catch {
+    return 'unknown';
+  }
 }
 
 export async function getCurrentCoord(): Promise<Coord | null> {
