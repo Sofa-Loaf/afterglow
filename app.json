@@ -4,11 +4,11 @@
     "slug": "afterglow",
     "owner": "www.28to3.me",
     "scheme": "afterglow",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "orientation": "portrait",
     "icon": "./assets/brand/afterglow-app-icon.png",
     "userInterfaceStyle": "dark",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "splash": {
       "image": "./assets/brand/afterglow-wordmark.png",
       "resizeMode": "contain",
@@ -25,7 +25,7 @@
     },
     "android": {
       "package": "me.to28.afterglow",
-      "versionCode": 2,
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/brand/afterglow-app-icon.png",
         "backgroundColor": "#0a0a0b"

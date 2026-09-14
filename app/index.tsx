@@ -33,17 +33,23 @@ export default function FieldScreen() {
   const [items, setItems] = useState<Afterglow[]>([]);
 
   const refresh = useCallback(async () => {
-    const status = await getForegroundPermission();
-    setPermission(status);
-    const coord = status === 'granted' ? await getCurrentCoord() : null;
-    const origin = coord ?? FALLBACK_ORIGIN;
-    setHere(coord);
-    const local = await listLocalAfterglows();
-    const nearby = residueInReach([...local, ...sampleAfterglowsNear(origin)], origin).sort(
-      (a, b) => b.createdAt - a.createdAt,
-    );
-    rememberShown(nearby, origin);
-    setItems(nearby);
+    try {
+      const status = await getForegroundPermission();
+      setPermission(status);
+      const coord = status === 'granted' ? await getCurrentCoord() : null;
+      const origin = coord ?? FALLBACK_ORIGIN;
+      setHere(coord);
+      const local = await listLocalAfterglows();
+      const nearby = residueInReach([...local, ...sampleAfterglowsNear(origin)], origin).sort(
+        (a, b) => b.createdAt - a.createdAt,
+      );
+      rememberShown(nearby, origin);
+      setItems(nearby);
+    } catch {
+      setPermission('unknown');
+      setHere(null);
+      setItems([]);
+    }
   }, []);
 
   useFocusEffect(

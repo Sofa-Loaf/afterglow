@@ -27,14 +27,22 @@ export default function ResidueScreen() {
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const cached = findShown(id);
-      const local = id ? await getAfterglow(id) : null;
-      const sample = sampleAfterglowsNear(FALLBACK_ORIGIN).find((entry) => entry.id === id) ?? null;
-      const coord = await getCurrentCoord();
-      if (!cancelled) {
-        setItem(cached ?? local ?? sample);
-        setHere(coord);
-        setGateReady(true);
+      try {
+        const cached = findShown(id);
+        const local = id ? await getAfterglow(id) : null;
+        const sample = sampleAfterglowsNear(FALLBACK_ORIGIN).find((entry) => entry.id === id) ?? null;
+        const coord = await getCurrentCoord();
+        if (!cancelled) {
+          setItem(cached ?? local ?? sample);
+          setHere(coord);
+          setGateReady(true);
+        }
+      } catch {
+        if (!cancelled) {
+          setItem(findShown(id));
+          setHere(null);
+          setGateReady(true);
+        }
       }
     })();
     return () => {

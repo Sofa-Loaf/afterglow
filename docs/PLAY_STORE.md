@@ -44,7 +44,8 @@ To let CI kick a later build: Expo dashboard → Access tokens → `EXPO_TOKEN` 
 | EAS reminder | `eas.json` build profiles set `AFTERGLOW_ANDROID_PACKAGE=me.to28.afterglow` (the binary id still comes from `app.json`) |
 | Expo slug | `afterglow` |
 | Default store name | Afterglow |
-| Version | `0.1.1` (`app.json` / `package.json`), Android `versionCode` `2` |
+| Version | `0.1.2` (`app.json` / `package.json`), Android `versionCode` `3` |
+| Architecture | **Legacy / Paper.** `newArchEnabled: false` with Reanimated **3.19.1** (not 4). See note below. |
 | Privacy policy URL | **https://28to3.me/apps/afterglow.html#privacy** |
 | Fallback policy | [docs/PRIVACY.md](PRIVACY.md), [docs/privacy.html](privacy.html), or https://28to3.me/privacy |
 | Landing change | `#privacy` is live on 28to3.me (companion Sofa-Loaf/28to3). Paste the URL above into Play. |
@@ -233,6 +234,10 @@ eas build -p android --profile production
 ```
 
 Wait for the Expo build page to finish. Download the `.aab`. In Play Console → **Testing → Internal testing** (or Production later) → **Create release** → upload that AAB.
+
+**Play architecture (why New Architecture is off)**
+
+EAS build `4a85a1c9` (v0.1.1 / versionCode 2, commit `f46419b`) shipped `newArchEnabled: true` with Reanimated 4 + `react-native-worklets`. That Play internal binary still instant-closed on open. Reanimated 4 is New-Architecture-only — turning `newArchEnabled` off *while keeping Reanimated 4* would crash harder. This AAB uses Expo SDK 54’s documented legacy path: `newArchEnabled: false` and Reanimated **3.19.1** (Paper). Do not add `react-native-worklets` to this stack.
 
 **Preview APK** (sideload / friends, not Play):
 

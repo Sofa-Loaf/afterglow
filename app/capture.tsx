@@ -61,7 +61,11 @@ export default function CaptureScreen() {
       placeHint: partial.placeHint ?? 'this place',
       plays: 0,
     };
-    await saveAfterglow(item);
+    try {
+      await saveAfterglow(item);
+    } catch {
+      // Local persist is best-effort.
+    }
     rememberOne(item);
     router.replace('/');
   }
