@@ -7,9 +7,9 @@ import type { Afterglow } from '../types';
 const KEY = 'afterglow.local.v0';
 
 async function readAll(): Promise<Afterglow[]> {
-  const raw = await AsyncStorage.getItem(KEY);
-  if (!raw) return [];
   try {
+    const raw = await AsyncStorage.getItem(KEY);
+    if (!raw) return [];
     const parsed = JSON.parse(raw) as Afterglow[];
     return Array.isArray(parsed) ? parsed.map(withPlays) : [];
   } catch {
@@ -18,13 +18,21 @@ async function readAll(): Promise<Afterglow[]> {
 }
 
 async function writeAll(items: Afterglow[]): Promise<void> {
-  await AsyncStorage.setItem(KEY, JSON.stringify(items));
+  try {
+    await AsyncStorage.setItem(KEY, JSON.stringify(items));
+  } catch {
+    // Local store is best-effort. Never crash a cold start over disk.
+  }
 }
 
 export async function purgeExpired(now: number = Date.now()): Promise<Afterglow[]> {
-  const kept = (await readAll()).filter((item) => !isExpired(item.expiresAt, now));
-  await writeAll(kept);
-  return kept;
+  try {
+    const kept = (await readAll()).filter((item) => !isExpired(item.expiresAt, now));
+    await writeAll(kept);
+    return kept;
+  } catch {
+    return [];
+  }
 }
 
 export async function listLocalAfterglows(): Promise<Afterglow[]> {
@@ -32,13 +40,21 @@ export async function listLocalAfterglows(): Promise<Afterglow[]> {
 }
 
 export async function saveAfterglow(item: Afterglow): Promise<void> {
-  const current = await purgeExpired();
-  await writeAll([withPlays(item), ...current.filter((existing) => existing.id !== item.id)]);
+  try {
+    const current = await purgeExpired();
+    await writeAll([withPlays(item), ...current.filter((existing) => existing.id !== item.id)]);
+  } catch {
+    // Best-effort persist. Capture UI still navigates home.
+  }
 }
 
 export async function getAfterglow(id: string): Promise<Afterglow | null> {
-  const items = await purgeExpired();
-  return items.find((item) => item.id === id) ?? null;
+  try {
+    const items = await purgeExpired();
+    return items.find((item) => item.id === id) ?? null;
+  } catch {
+    return null;
+  }
 }
 
 /** v0 stub: local device only. No account, no sync, no identity. */

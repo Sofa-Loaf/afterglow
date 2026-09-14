@@ -23,6 +23,8 @@ This repository is **Afterglow only**. It does not include Minute Cheat Sheet or
 
 Expo SDK 54 scaffold. **Android / Play first.** iOS is not blocked (same codebase) but store work waits.
 
+v0.1.2 Play AAB uses **legacy architecture** (`newArchEnabled: false`) and Reanimated 3.19.1. New Architecture + Reanimated 4 (v0.1.1 / versionCode 2) still instant-closed on John’s Play internal install.
+
 v0 includes:
 
 - Foreground GPS permission (leave detection + the fifty-foot access gate)
