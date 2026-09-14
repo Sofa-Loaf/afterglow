@@ -1,7 +1,11 @@
+import 'react-native-gesture-handler';
+
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { Wordmark } from '../src/components/Wordmark';
 import { color, font } from '../src/theme';
@@ -14,7 +18,7 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <>
+    <GestureHandlerRootView style={styles.root}>
       <StatusBar style="light" backgroundColor={color.bg} />
       <Stack
         screenOptions={{
@@ -42,6 +46,13 @@ export default function RootLayout() {
         <Stack.Screen name="residue/[id]" options={{ title: 'Residue' }} />
         <Stack.Screen name="privacy" options={{ title: 'Privacy' }} />
       </Stack>
-    </>
+    </GestureHandlerRootView>
   );
 }
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: color.bg,
+  },
+});

@@ -4,7 +4,7 @@
     "slug": "afterglow",
     "owner": "www.28to3.me",
     "scheme": "afterglow",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "orientation": "portrait",
     "icon": "./assets/brand/afterglow-app-icon.png",
     "userInterfaceStyle": "dark",
@@ -25,6 +25,7 @@
     },
     "android": {
       "package": "me.to28.afterglow",
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/brand/afterglow-app-icon.png",
         "backgroundColor": "#0a0a0b"

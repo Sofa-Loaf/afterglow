@@ -11,27 +11,23 @@ Play Console is **verified** (John, 2026-09-13). The production AAB is **not** i
 | Application id | `me.to28.afterglow` — locked in `app.json`. Do not change. |
 | Play Console | Verified. Internal-testing upload can proceed once the AAB exists. |
 | Privacy policy URL | https://28to3.me/apps/afterglow.html#privacy |
-| EAS project id | **Not in git.** Do **not** invent one. `eas init` writes it after Expo login. |
-| Production AAB | Blocked on John — commands below. |
+| EAS project id | `cb3c3a77-19bd-4e3a-ae5e-69f4101dbcec` in `app.json` (`expo.extra.eas.projectId`, owner `www.28to3.me`). Do **not** invent a new one or re-run `eas init`. |
+| Production AAB | Next: `npx eas-cli@latest build -p android --profile production` |
 | Feature graphic + app icon | In repo (see Graphics). |
 | Phone screenshots | **Still blocked on John.** Capture on a phone or emulator. Do not invent Play Console screenshots. |
 
-### Exact commands after Expo login
+### Exact command for the production AAB
 
-John runs these from the repo root (Node 20+), **after** `npx eas-cli@latest login` succeeds. Package stays `me.to28.afterglow`.
+Project id is already in `app.json`. From the repo root (Node 20+), after `npx eas-cli@latest login` if this machine is not already logged in. Package stays `me.to28.afterglow`.
 
 ```bash
-# Writes extra.eas.projectId into app.json — commit that id, do not invent it
-npx eas-cli@latest init
-
 # Production AAB for Play internal testing (profile sets buildType: app-bundle)
 npx eas-cli@latest build -p android --profile production
 ```
 
-If `eas` is on PATH, the same two steps are:
+If `eas` is on PATH:
 
 ```bash
-eas init
 eas build -p android --profile production
 ```
 
@@ -48,7 +44,7 @@ To let CI kick a later build: Expo dashboard → Access tokens → `EXPO_TOKEN` 
 | EAS reminder | `eas.json` build profiles set `AFTERGLOW_ANDROID_PACKAGE=me.to28.afterglow` (the binary id still comes from `app.json`) |
 | Expo slug | `afterglow` |
 | Default store name | Afterglow |
-| Version | `0.1.0` (`app.json` / `package.json`) — bump before a second upload |
+| Version | `0.1.1` (`app.json` / `package.json`), Android `versionCode` `2` |
 | Privacy policy URL | **https://28to3.me/apps/afterglow.html#privacy** |
 | Fallback policy | [docs/PRIVACY.md](PRIVACY.md), [docs/privacy.html](privacy.html), or https://28to3.me/privacy |
 | Landing change | `#privacy` is live on 28to3.me (companion Sofa-Loaf/28to3). Paste the URL above into Play. |
@@ -64,8 +60,8 @@ Create the Play app with package **`me.to28.afterglow`**. It must match `app.jso
 
 Account enrollment is done. Remaining work is Expo/EAS, real screenshots, then paste-and-upload in Console. Nothing below requires waiting on iOS.
 
-1. Free **Expo** account on a machine John controls: `npx eas-cli@latest login`.
-2. Then the two commands in **Exact commands after Expo login** (`eas init`, then `eas build -p android --profile production`). Commit the project id `eas init` writes. Do not invent one.
+1. Free **Expo** account on a machine John controls: `npx eas-cli@latest login` (skip if already logged in).
+2. `npx eas-cli@latest build -p android --profile production`. Do **not** run `eas init` — the project id is already committed.
 3. Confirm the Play app package is **`me.to28.afterglow`** (must match `app.json` and the AAB). Do not create `com.sofaloaf.afterglow`.
 4. Paste **privacy policy**: https://28to3.me/apps/afterglow.html#privacy
 5. Fill **Store listing** from **this file**, **Graphics** (repo icon + feature graphic + **device-captured** screenshots), **Categorization**, **Contact details**.
@@ -218,7 +214,7 @@ System strings (already in `app.json`):
 
 ## Production AAB — exact EAS steps
 
-Package `me.to28.afterglow` is read from `app.json`. The production profile in `eas.json` builds an **Android App Bundle** (`buildType: app-bundle`). Do not invent `extra.eas.projectId` in git.
+Package `me.to28.afterglow` is read from `app.json`. The production profile in `eas.json` builds an **Android App Bundle** (`buildType: app-bundle`). EAS `projectId` `cb3c3a77-19bd-4e3a-ae5e-69f4101dbcec` is already in `app.json` under owner `www.28to3.me`. Do not invent a new id or re-run `eas init`.
 
 From the repo root, with Node 20+:
 
@@ -226,19 +222,17 @@ From the repo root, with Node 20+:
 # 1. Once per machine (Expo account John controls)
 npx eas-cli@latest login
 
-# 2. After login — these two are the remaining AAB blockers
-npx eas-cli@latest init
+# 2. Production AAB for Play internal testing
 npx eas-cli@latest build -p android --profile production
 ```
 
 Equivalent if `eas` is on PATH after login:
 
 ```bash
-eas init
 eas build -p android --profile production
 ```
 
-`eas init` writes the EAS project id into `app.json`. Commit that change. Wait for the Expo build page to finish. Download the `.aab`. In Play Console → **Testing → Internal testing** (or Production later) → **Create release** → upload that AAB.
+Wait for the Expo build page to finish. Download the `.aab`. In Play Console → **Testing → Internal testing** (or Production later) → **Create release** → upload that AAB.
 
 **Preview APK** (sideload / friends, not Play):
 
