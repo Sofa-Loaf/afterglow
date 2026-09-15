@@ -29,6 +29,7 @@ const appJson = JSON.parse(readFileSync(join(root, 'app.json'), 'utf8')) as {
 const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')) as {
   version?: string;
   dependencies?: Record<string, string>;
+  expo?: { autolinking?: { exclude?: string[] } };
 };
 const layout = readFileSync(join(root, 'app/_layout.tsx'), 'utf8');
 const babel = readFileSync(join(root, 'babel.config.js'), 'utf8');
@@ -36,26 +37,30 @@ const easJson = JSON.parse(readFileSync(join(root, 'eas.json'), 'utf8')) as {
   build?: { production?: { android?: { buildType?: string }; env?: { AFTERGLOW_ANDROID_PACKAGE?: string } } };
 };
 
-assert.equal(pkg.version, '0.1.2');
-assert.equal(appJson.expo.version, '0.1.2');
-assert.equal(appJson.expo.android?.versionCode, 3);
+assert.equal(pkg.version, '0.1.3');
+assert.equal(appJson.expo.version, '0.1.3');
+assert.equal(appJson.expo.android?.versionCode, 4);
 assert.equal(appJson.expo.android?.package, 'me.to28.afterglow');
 assert.equal(appJson.expo.extra?.androidPackage, 'me.to28.afterglow');
 assert.equal(appJson.expo.owner, 'www.28to3.me');
 assert.equal(appJson.expo.extra?.eas?.projectId, 'cb3c3a77-19bd-4e3a-ae5e-69f4101dbcec');
 assert.equal(easJson.build?.production?.android?.buildType, 'app-bundle');
 assert.equal(easJson.build?.production?.env?.AFTERGLOW_ANDROID_PACKAGE, 'me.to28.afterglow');
-assert.equal(appJson.expo.newArchEnabled, false);
+assert.equal(appJson.expo.newArchEnabled, true);
 assert.ok(pkg.dependencies?.['react-native-gesture-handler']);
-assert.ok(pkg.dependencies?.['react-native-reanimated']);
-assert.match(String(pkg.dependencies?.['react-native-reanimated']), /^3\./);
+assert.equal(pkg.dependencies?.['react-native-reanimated'], undefined);
 assert.equal(pkg.dependencies?.['react-native-worklets'], undefined);
+assert.deepEqual(pkg.expo?.autolinking?.exclude, ['react-native-reanimated']);
 assert.match(layout, /^import 'react-native-gesture-handler';/);
+assert.doesNotMatch(layout, /react-native-reanimated/);
 assert.match(layout, /RootErrorBoundary/);
 assert.match(layout, /export function ErrorBoundary/);
 assert.match(babel, /babel-preset-expo/);
 assert.doesNotMatch(babel, /worklets:\s*false/);
 assert.doesNotMatch(babel, /plugins:\s*\[/);
+const capture = readFileSync(join(root, 'app/capture.tsx'), 'utf8');
+assert.doesNotMatch(capture, /expo-audio/);
+assert.match(capture, /lazy\(\(\) => import\('\.\.\/src\/capture\/VoiceSection'\)\)/);
 const store = readFileSync(join(root, 'src/storage/ephemeralStore.ts'), 'utf8');
 assert.match(store, /AsyncStorage\.getItem/);
 assert.match(store, /catch \{/);
