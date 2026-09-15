@@ -1,7 +1,8 @@
 import 'react-native-gesture-handler';
-import 'react-native-reanimated';
 
 import { Stack } from 'expo-router';
+// Reanimated is intentionally not imported. Afterglow has no worklets;
+// v0.1.1–0.1.2 still native-crashed on Pixel 10 Pro during Reanimated init.
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';

@@ -23,7 +23,7 @@ This repository is **Afterglow only**. It does not include Minute Cheat Sheet or
 
 Expo SDK 54 scaffold. **Android / Play first.** iOS is not blocked (same codebase) but store work waits.
 
-v0.1.2 Play AAB uses **legacy architecture** (`newArchEnabled: false`) and Reanimated 3.19.1. New Architecture + Reanimated 4 (v0.1.1 / versionCode 2) still instant-closed on John’s Play internal install.
+v0.1.3 Play AAB uses Expo SDK 54 **New Architecture** and **does not ship Reanimated**. Afterglow has no animations; expo-router’s Stack peer is optional. v0.1.1 (Reanimated 4) and v0.1.2 (Paper + Reanimated 3.19.1) both still “kept stopping” on John’s Pixel 10 Pro — Reanimated native init runs before the JS ErrorBoundary.
 
 v0 includes:
 
