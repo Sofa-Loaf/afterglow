@@ -6,7 +6,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { canHearResidue } from '../../src/access';
 import { Screen } from '../../src/components/Screen';
 import { TapeButton } from '../../src/components/TapeButton';
-import { findShown, gateOrigin, routeId, shownAt } from '../../src/data/residueIndex';
+import { findShown, routeId, shownAt } from '../../src/data/residueIndex';
 import { FALLBACK_ORIGIN, sampleAfterglowsNear } from '../../src/data/sampleAfterglows';
 import { ACCESS_COPY } from '../../src/doctrine';
 import { getCurrentCoord } from '../../src/location/permissions';
@@ -50,8 +50,7 @@ export default function ResidueScreen() {
     };
   }, [id]);
 
-  const origin = gateOrigin(here, FALLBACK_ORIGIN);
-  const inRange = item ? canHearResidue(origin, item.coord, shownAt()) : false;
+  const inRange = item ? canHearResidue(here, item.coord, shownAt()) : false;
 
   if (!item) {
     return (
@@ -65,13 +64,24 @@ export default function ResidueScreen() {
     );
   }
 
-  if (gateReady && !inRange) {
+  if (!gateReady) {
+    return (
+      <Screen>
+        <Text style={styles.kicker}>same spot</Text>
+        <Text style={styles.title}>Checking this pin.</Text>
+      </Screen>
+    );
+  }
+
+  if (!inRange) {
     return (
       <Screen>
         <Text style={styles.kicker}>same spot</Text>
         <Text style={styles.title}>at {item.placeHint}</Text>
         <View style={styles.emptyBox}>
-          <Text style={styles.body}>{ACCESS_COPY.tooFar}</Text>
+          <Text style={styles.body}>
+            {here === null ? ACCESS_COPY.needsLocation : ACCESS_COPY.tooFar}
+          </Text>
         </View>
         <View style={styles.footer}>
           <TapeButton label="Move on" kind="ghost" onPress={() => router.back()} />

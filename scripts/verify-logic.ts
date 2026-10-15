@@ -66,6 +66,8 @@ assert.match(store, /AsyncStorage\.getItem/);
 assert.match(store, /catch \{/);
 const field = readFileSync(join(root, 'app/index.tsx'), 'utf8');
 assert.match(field, /catch \{/);
+assert.match(field, /rememberShown\(nearby, coord \?\? undefined\)/);
+assert.doesNotMatch(field, /rememberShown\(nearby, origin\)/);
 
 assert.equal(PRODUCT.freeForever, true);
 assert.equal(PRODUCT.payments, 'none');
@@ -74,6 +76,7 @@ assert.equal(CAPTURE.voiceMaxSeconds, 12);
 assert.equal(RESIDUE.accessRadiusMeters, 15);
 assert.equal(RESIDUE.accessRadiusFeetApprox, 50);
 assert.match(ACCESS_COPY.radius, /fifty feet/);
+assert.match(ACCESS_COPY.needsLocation, /turn on location to hear this/i);
 
 const origin = { latitude: 40.7359, longitude: -73.9911 };
 const inside = offsetMeters(origin, 8, 0);
@@ -108,7 +111,28 @@ assert.deepEqual(gateOrigin(null, far), origin);
 assert.deepEqual(gateOrigin(justOut, far), justOut);
 assert.equal(canHearResidue(origin, nearby[0].coord, origin), true);
 assert.equal(canHearResidue(inside, nearby[0].coord, origin), true);
-assert.equal(canHearResidue(far, nearby[0].coord, origin), false);
+// List origin inside the gate still counts after the live fix drifts off the pin.
+assert.equal(canHearResidue(far, nearby[0].coord, origin), true);
+
+// Far pin + location unavailable => deny. A missing fix is not distance 0.
+assert.equal(canHearResidue(null, far, null), false);
+assert.equal(canHearResidue(null, far, origin), false);
+// Near the pin => allow, with or without a list origin.
+assert.equal(canHearResidue(inside, origin, null), true);
+assert.equal(canHearResidue(origin, origin, null), true);
+// List origin near the pin, user slightly outside the radius => allow.
+assert.equal(canHearResidue(justOut, origin, inside), true);
+// List origin far from the pin and the user far => deny.
+assert.equal(canHearResidue(far, origin, far), false);
+assert.equal(canHearResidue(far, origin, justOut), false);
+// Standing on the list origin must not open a pin that origin is outside of.
+assert.equal(canHearResidue(origin, far, origin), false);
+
+const residueScreen = readFileSync(join(root, 'app/residue/[id].tsx'), 'utf8');
+assert.match(residueScreen, /canHearResidue\(here,/);
+assert.doesNotMatch(residueScreen, /gateOrigin\(/);
+assert.match(residueScreen, /ACCESS_COPY\.needsLocation/);
+assert.match(residueScreen, /here === null \? ACCESS_COPY\.needsLocation/);
 
 const created = Date.UTC(2026, 0, 1);
 assert.equal(isExpired(expiresAt(created, 14), created + 13 * 24 * 60 * 60 * 1000), false);

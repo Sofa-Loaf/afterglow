@@ -17,11 +17,16 @@ export function findShown(id: string | undefined): Afterglow | null {
   return shown.find((item) => item.id === id) ?? null;
 }
 
-/** Pin used for the nearby list. Playback uses live GPS when it exists, else this. */
+/** Pin used for the nearby list. Not a stand-in for a missing live GPS fix. */
 export function shownAt(): Coord | null {
   return shownOrigin;
 }
 
+/**
+ * Nearby-list origin, else the caller fallback. Playback must not pass this
+ * in place of a live fix: a denied GPS reading would become this point and
+ * the gate distance would collapse to 0.
+ */
 export function gateOrigin(live: Coord | null, fallback: Coord): Coord {
   return live ?? shownOrigin ?? fallback;
 }
