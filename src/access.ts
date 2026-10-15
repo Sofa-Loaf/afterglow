@@ -12,12 +12,15 @@ export function isWithinAccessRadius(
 }
 
 /**
- * Playback gate. Prefer a live fix vs the pin. If GPS jitters, staying at the
- * nearby-list origin still counts as the same spot.
+ * Playback gate. A live fix within the radius of the pin can hear it.
+ * GPS jitter: the nearby-list origin counts only when that origin itself
+ * was inside the gate for this pin. A missing fix is not a position —
+ * comparing the user to the list origin is distance 0 once a denied fix
+ * has been replaced by that origin, and would open every pin.
  */
-export function canHearResidue(here: Coord, pin: Coord, listOrigin: Coord | null = null): boolean {
-  if (isWithinAccessRadius(here, pin)) return true;
-  return listOrigin !== null && isWithinAccessRadius(here, listOrigin);
+export function canHearResidue(here: Coord | null, pin: Coord, listOrigin: Coord | null = null): boolean {
+  if (here && isWithinAccessRadius(here, pin)) return true;
+  return listOrigin !== null && isWithinAccessRadius(listOrigin, pin);
 }
 
 /** Nearby list — only residue you can stand inside the gate for. */

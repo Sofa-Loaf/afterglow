@@ -43,7 +43,9 @@ export default function FieldScreen() {
       const nearby = residueInReach([...local, ...sampleAfterglowsNear(origin)], origin).sort(
         (a, b) => b.createdAt - a.createdAt,
       );
-      rememberShown(nearby, origin);
+      // Only a live fix is a list origin. The sample-park fallback is for the
+      // empty-GPS list, not proof the viewer stood inside the playback gate.
+      rememberShown(nearby, coord ?? undefined);
       setItems(nearby);
     } catch {
       setPermission('unknown');

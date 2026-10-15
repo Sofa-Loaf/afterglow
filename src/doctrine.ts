@@ -37,6 +37,7 @@ export const ACCESS_COPY = {
   radius: 'about fifty feet',
   radiusShort: '~50 ft',
   tooFar: 'This whisper stays at the pin. Stand within about fifty feet.',
+  needsLocation: 'Turn on location to hear this.',
   emptyNearby: 'Nothing within fifty feet. Walk to the pin, or leave a whisper when you go.',
 } as const;
 
